@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/cmake,idapro,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=cmake,idapro,visualstudio
 
+_tools/
+
 ghidra/
 
 ### CMake ###
