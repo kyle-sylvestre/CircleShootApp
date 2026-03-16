@@ -154,15 +154,15 @@ void CircleShootApp::Init()
 
         ImageFont *fontMain10Outline = reinterpret_cast<ImageFont *>(fontMain10->Duplicate());
         fontMain10Outline->RemoveTag("Outline");
-        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE", fontDialog);
+        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE", fontMain10Outline);
 
         ImageFont *fontMain10Outline2 = reinterpret_cast<ImageFont *>(fontMain10->Duplicate());
         fontMain10Outline2->RemoveTag("Outline2");
-        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE2", fontDialog);
+        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE2", fontMain10Outline2);
 
         ImageFont *fontMain10Outline3 = reinterpret_cast<ImageFont *>(fontMain10->Duplicate());
         fontMain10Outline3->RemoveTag("Outline3");
-        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE3", fontDialog);
+        mResourceManager->ReplaceFont("FONT_MAIN10OUTLINE3", fontMain10Outline3);
     }
 
     if (!ExtractInitResources(mResourceManager))
@@ -547,9 +547,8 @@ void CircleShootApp::LoadingThreadProc()
             Sexy::Font *main8Font = mResourceManager->GetFont("FONT_MAIN8");
             if (main8Font != NULL)
             {
-                Sexy::ImageFont *imFont = reinterpret_cast<Sexy::ImageFont *>(main8Font);
+                ImageFont *imFont = reinterpret_cast<Sexy::ImageFont *>(main8Font->Duplicate());
                 imFont->AddTag("Outline");
-
                 mResourceManager->ReplaceFont("FONT_MAIN8OUTLINE", imFont);
             }
 
