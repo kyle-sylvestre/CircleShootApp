@@ -97,16 +97,8 @@ void CircleShootApp::Init()
     mMaxPlays = GetInteger("MaxPlays", 0);
     mMaxTime = GetInteger("MaxTime", 60);
 
-#ifdef _WIN32
-    mLastSongSwitchTime = GetTickCount() - 100000;
-    gMainThreadId = (int)GetCurrentThreadId();
-#else
-#ifdef _POSIX
-    // todo
-    gMainThreadId = (int)pthread_self();
-#endif
-#error Unimplemented on this platform.
-#endif
+    mLastSongSwitchTime = SDL_GetTicks() - 100000;
+    gMainThreadId = std::this_thread::get_id();
 
     gThreadRand.SRand(Sexy::Rand());
     gAppRand.SRand(Sexy::Rand());
@@ -125,7 +117,7 @@ void CircleShootApp::Init()
         mProfile = mProfileMgr->GetAnyProfile();
     }
 
-    if (!mLevelParser->ParseLevelFile("levels\\levels.xml"))
+    if (!mLevelParser->ParseLevelFile("levels/levels.xml"))
     {
         Popup(mLevelParser->GetErrorText());
         exit(0);
@@ -175,8 +167,8 @@ void CircleShootApp::Init()
     SetCursorImage(2, Sexy::IMAGE_CURSOR_DRAGGING);
     SetCursorImage(3, Sexy::IMAGE_CURSOR_TEXT);
 
-    mMusicInterface->LoadMusic(0, "music\\zuma.mo3");
-    mMusicInterface->LoadMusic(1, "music\\zuma.mo3");
+    mMusicInterface->LoadMusic(0, "music/zuma.mo3");
+    mMusicInterface->LoadMusic(1, "music/zuma.mo3");
     PlaySong(24, false, 0.01);
     ShowLoadingScreen();
 }
@@ -572,10 +564,11 @@ void CircleShootApp::LoadingThreadProc()
 
 void CircleShootApp::LoadingThreadCompleted()
 {
-    if (ShouldCheckForUpdate())
-    {
-        DoConfirmCheckForUpdatesDialog();
-    }
+    // !PORT
+    //if (ShouldCheckForUpdate())
+    //{
+    //    DoConfirmCheckForUpdatesDialog();
+    //}
 }
 
 void CircleShootApp::FinishStatsDialog(bool confirm)
@@ -788,7 +781,7 @@ void CircleShootApp::FinishRenameUserDialog(bool confirm)
 
     if (!aNewName.empty())
     {
-        int cmp = stricmp(aSelName.c_str(), aNewName.c_str());
+        int cmp = strcasecmp(aSelName.c_str(), aNewName.c_str());
         if (mProfileMgr->RenameProfile(aSelName, aNewName))
         {
             mProfileMgr->Save();
@@ -896,7 +889,7 @@ void CircleShootApp::DoConfirmQuitDialog()
 void CircleShootApp::SwitchSong(int id)
 {
     if (this->mLastSong == id ||
-        (GetTickCount() - this->mLastSongSwitchTime) >= 5000)
+        (SDL_GetTicks() - this->mLastSongSwitchTime) >= 5000)
     {
         PlaySong(id, true, 0.01);
     }
@@ -965,7 +958,7 @@ void CircleShootApp::PlaySong(int id, bool fade, double fadeSpeed)
         }
 
         mLastSong = id;
-        mLastSongSwitchTime = GetTickCount();
+        mLastSongSwitchTime = SDL_GetTicks();
     }
 }
 

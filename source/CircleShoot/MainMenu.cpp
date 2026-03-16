@@ -11,7 +11,7 @@
 #include <SexyAppFramework/SoundManager.h>
 #include <SexyAppFramework/SoundInstance.h>
 #include <SexyAppFramework/ResourceManager.h>
-#include <SexyAppFramework/DDImage.h>
+#include <SexyAppFramework/GLImage.h>
 
 #include "CircleShootApp.h"
 #include "CircleButton.h"

@@ -6,7 +6,7 @@
 #include <SexyAppFramework/WidgetManager.h>
 #include <SexyAppFramework/Widget.h>
 #include <SexyAppFramework/ResourceManager.h>
-#include <SexyAppFramework/DDImage.h>
+#include <SexyAppFramework/GLImage.h>
 
 #include "CircleShootApp.h"
 #include "Res.h"

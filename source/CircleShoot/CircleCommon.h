@@ -2,6 +2,9 @@
 #define __SEXY_CIRCLECOMMON_H__
 
 #include <SexyAppFramework/Point.h>
+#include <SDL2/SDL.h>
+#include <thread>
+typedef unsigned int DWORD;
 
 // For convenience of making mods that want a different window size.
 #define CIRCLE_WINDOW_WIDTH 640
@@ -81,7 +84,7 @@ namespace Sexy
     extern MTRand gThreadRand;
     extern MTRand gAppRand;
 
-    extern int gMainThreadId;
+    extern std::thread::id gMainThreadId;
 
     extern const char *gSmallGauntletStages[];
     extern const char *gGauntletStages[];

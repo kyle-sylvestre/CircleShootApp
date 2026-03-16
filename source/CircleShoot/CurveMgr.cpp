@@ -1104,7 +1104,7 @@ bool CurveMgr::CheckSet(Ball *theBall)
 
     if (!mHadPowerUp)
     {
-        int *destroySound = &Sexy::SOUND_BALLDESTROYED1;
+        intptr_t *destroySound = &Sexy::SOUND_BALLDESTROYED1;
 
         switch (aComboCount)
         {
@@ -1131,7 +1131,7 @@ bool CurveMgr::CheckSet(Ball *theBall)
         if (aSound != NULL)
         {
             aSound->AdjustPitch(2 * aComboCount);
-            aSound->SetVolume(min(1.0, aComboCount * 0.2 + 0.4));
+            aSound->SetVolume(std::min(1.0, aComboCount * 0.2 + 0.4));
             aSound->Play(false, true);
         }
     }

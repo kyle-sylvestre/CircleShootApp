@@ -762,7 +762,7 @@ void DrawTextParticles(
     sg.DrawString(theString, 0, Sexy::FONT_HUGE->GetAscent());
     theY -= Sexy::FONT_HUGE->GetAscent();
 
-    ulong *aBits = aImage.GetBits();
+    uint32_t *aBits = aImage.GetBits();
 
     for (int i = 0; i < aImage.mHeight; i++)
     {

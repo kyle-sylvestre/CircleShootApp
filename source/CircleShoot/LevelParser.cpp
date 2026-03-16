@@ -290,11 +290,14 @@ LevelDesc &LevelParser::GetRandomBoard(int theDifficulty, int theLevel, UserProf
     }
 }
 
+#include <unistd.h>
 bool LevelParser::ParseLevelFile(const std::string &theFilename)
 {
     mLevels.clear();
     mXMLParser = new XMLParser();
     mXMLParser->OpenFile(theFilename);
+    
+    char buf[1024]; getcwd(buf, sizeof(buf));
 
     XMLElement anElement;
     while (!mXMLParser->HasFailed())
@@ -359,14 +362,17 @@ std::string LevelParser::GetErrorText()
 
 std::string LevelParser::GetPath(const std::string &theStr)
 {
+    std::string result;
     if (theStr.find('/', 0) == -1 && theStr.find('\\', 0) == -1)
     {
-        return mCurDir + theStr;
+        result = mCurDir + theStr;
     }
     else
     {
-        return theStr;
+        result = theStr;
     }
+    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+    return result;
 }
 
 void LevelParser::CopyGraphics(LevelDesc &to, LevelDesc &from)
@@ -564,7 +570,7 @@ void ParseHex(const char *theBuf, void *theValue)
 
 void ParseBool(const char *theBuf, void *theValue)
 {
-    *(bool *)theValue = (stricmp(theBuf, "true") == 0);
+    *(bool *)theValue = (strcasecmp(theBuf, "true") == 0);
 }
 
 void GetCurveAttribute(
@@ -709,8 +715,10 @@ bool LevelParser::DoParseLevel(XMLElement &theElem, bool isLevel)
     if (GetAttribute(theElem, "image", aVal))
         aDesc.mImagePath = GetPath(aVal);
 
+    SDL_Log("%s", aDesc.mImagePath.c_str());
+
     if (GetAttribute(theElem, "space", aVal))
-        aDesc.mInSpace = stricmp(aVal.c_str(), "true") == 0;
+        aDesc.mInSpace = strcasecmp(aVal.c_str(), "true") == 0;
 
     int aPowerFreq = 0;
     if (GetAttribute(theElem, "powerfreq", aVal) && sscanf(aVal.c_str(), "%d", &aPowerFreq) == 1)

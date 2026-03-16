@@ -340,7 +340,7 @@ bool ProfileMgr::RenameProfile(const std::string &theOldName, const std::string 
         return false;
     }
 
-    if (stricmp(theOldName.c_str(), theNewName.c_str()) != 0)
+    if (strcasecmp(theOldName.c_str(), theNewName.c_str()) != 0)
     {
         std::pair<ProfileMap::iterator, bool> anInsert = mProfileMap.insert(std::make_pair(theNewName, anItr->second));
         if (!anInsert.second)

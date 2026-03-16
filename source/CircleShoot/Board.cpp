@@ -2283,7 +2283,10 @@ void Board::DoSetupNextLevel()
 {
     WaitForLoadingThread();
     mLoadingThreadParam = 0;
-    mApp->mWorkerThread->DoTask(Board::StaticLoadProc, (void *)this);
+    
+    // TODO: crash from glDeleteTextures() call not on thread that glGenTexture()
+    //mApp->mWorkerThread->DoTask(Board::StaticLoadProc, (void *)this);
+    LoadProc();
 }
 
 void Board::DoGenerateBackgroundTransitions()

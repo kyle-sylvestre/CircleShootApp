@@ -2,7 +2,7 @@
 
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/Image.h>
-#include <SexyAppFramework/DDImage.h>
+#include <SexyAppFramework/GLImage.h>
 #include <SexyAppFramework/MemoryImage.h>
 #include <SexyAppFramework/SexyAppBase.h>
 #include <SexyAppFramework/ResourceManager.h>
@@ -52,7 +52,7 @@ public:
 
         if (aLeft < aRight && aTop < aBottom)
         {
-            ulong *v21 = &reinterpret_cast<MemoryImage *>(theImage)->GetBits()[aLeft + theImage->mWidth * aTop];
+            uint32_t *v21 = &reinterpret_cast<MemoryImage *>(theImage)->GetBits()[aLeft + theImage->mWidth * aTop];
             int v19 = mHeight;
             int v12 = aTop;
             int v20 = 0;
@@ -60,7 +60,7 @@ public:
 
             while (v12 != aBottom)
             {
-                ulong *v16 = v21;
+                uint32_t *v16 = v21;
                 for (int i = aLeft; aRight != i; ++i)
                 {
                     if ((*v16 & 0xFF000000) != 0)
@@ -131,7 +131,8 @@ SpriteMgr::SpriteMgr()
     mInSpace = false;
     mSpaceScroll = true;
     mNebulaImage = NULL;
-    mBackgroundImage = new DDImage(gSexyAppBase->mDDInterface);
+    // !PORT
+    mBackgroundImage = new GLImage(gSexyAppBase->mGLInterface);
     mBackgroundImage->Create(640, 480);
 }
 
@@ -512,7 +513,7 @@ void SpriteMgr::UpdateHole(int theCurveNum, float thePercentOpen)
     float v4 = thePercentOpen;
     for (int i = 0; i < 3; i++)
     {
-        thePercentOpen = max(aHole.mPercentOpen[i], thePercentOpen);
+        thePercentOpen = std::max(aHole.mPercentOpen[i], thePercentOpen);
     }
 
     aHole.mFrame = (int)(Sexy::IMAGE_HOLE_COVER->mNumRows * thePercentOpen);

@@ -77,7 +77,7 @@ bool CurveData::Load(const std::string &theFilePath)
     else
     {
         mEditType = aReader.ReadLong();
-        ulong aBufferSize = aReader.ReadLong();
+        uint32_t aBufferSize = aReader.ReadLong();
 
         if (aBufferSize > 1000000)
         {
@@ -91,7 +91,7 @@ bool CurveData::Load(const std::string &theFilePath)
         delete[] aByteArray;
     }
 
-    ulong aSize = aReader.ReadLong();
+    uint32_t aSize = aReader.ReadLong();
     if (aSize > 0)
     {
         if (mVersion > 1)
@@ -111,7 +111,7 @@ bool CurveData::Load(const std::string &theFilePath)
             float ox = aStartPoint.x;
             float oy = aStartPoint.y;
 
-            for (ulong i = 0; i < aSize - 1; i++)
+            for (uint32_t i = 0; i < aSize - 1; i++)
             {
                 mPointList.push_back(PathPoint());
                 PathPoint &aPoint = mPointList.back();
@@ -134,7 +134,7 @@ bool CurveData::Load(const std::string &theFilePath)
         }
         else
         {
-            for (ulong i = 0; i < aSize; i++)
+            for (uint32_t i = 0; i < aSize; i++)
             {
                 mPointList.push_back(PathPoint());
                 PathPoint &aPoint = mPointList.back();

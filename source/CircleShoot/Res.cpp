@@ -1,6 +1,7 @@
 #include "Zuma_Prefix.pch"
 
 #include <SexyAppFramework/ResourceManager.h>
+#include <SexyAppFramework/Font.h>
 #include "CircleCommon.h"
 #include "Res.h"
 
@@ -200,17 +201,17 @@ static void *gResources[] =
 
 Image *Sexy::GetImageById(ResourceId theId)
 {
-    return *(Image **)gResources[(int)theId];
+    return *(Image **)gResources[(intptr_t)theId];
 }
 
 Font *Sexy::GetFontById(ResourceId theId)
 {
-    return *(Font **)gResources[(int)theId];
+    return *(Font **)gResources[(intptr_t)theId];
 }
 
-int Sexy::GetSoundById(ResourceId theId)
+intptr_t Sexy::GetSoundById(ResourceId theId)
 {
-    return *(int *)gResources[(int)theId];
+    return *(intptr_t *)gResources[(intptr_t)theId];
 }
 
 bool Sexy::ExtractResourcesByName(ResourceManager *theMgr, const char *name)
@@ -243,6 +244,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theMgr, const char *name)
 Font *Sexy::FONT_DIALOG;
 Font *Sexy::FONT_FLOAT;
 Font *Sexy::FONT_MAIN10;
+Font *Sexy::FONT_PICO129;
 Font *Sexy::FONT_MAIN10OUTLINE;
 Font *Sexy::FONT_MAIN10OUTLINE2;
 Font *Sexy::FONT_MAIN10OUTLINE3;
@@ -722,40 +724,40 @@ Image *Sexy::IMAGE_MENU_BUTTON;
 Image *Sexy::IMAGE_ZUMA_BAR;
 Image *Sexy::IMAGE_ZUMA_BAR_DONE;
 Image *Sexy::IMAGE_FROG_LIVES;
-int Sexy::SOUND_BALLCLICK1;
-int Sexy::SOUND_BALLCLICK2;
-int Sexy::SOUND_BALLFIRE;
-int Sexy::SOUND_WARNING;
-int Sexy::SOUND_EXPLODE;
-int Sexy::SOUND_EARTHQUAKE;
-int Sexy::SOUND_FROGLAND;
-int Sexy::SOUND_JEWEL_APPEAR;
-int Sexy::SOUND_JEWEL_DISAPPEAR;
-int Sexy::SOUND_JEWEL_HIT;
-int Sexy::SOUND_CHAIN_BONUS;
-int Sexy::SOUND_GAP_BONUS;
-int Sexy::SOUND_ROLLING;
-int Sexy::SOUND_EXTRA_LIFE;
-int Sexy::SOUND_SLOWDOWN_BALL;
-int Sexy::SOUND_BACKWARDS_BALL;
-int Sexy::SOUND_ACCURACY_BALL;
-int Sexy::SOUND_TRAIL_LIGHT;
-int Sexy::SOUND_TRAIL_LIGHT_END;
-int Sexy::SOUND_GAME_START;
-int Sexy::SOUND_LEVEL_UP;
-int Sexy::SOUND_BAR_FULL;
-int Sexy::SOUND_LOST_LIFE;
-int Sexy::SOUND_GAME_OVER;
-int Sexy::SOUND_STAGE_COMPLETE;
-int Sexy::SOUND_TEMPLE_COMPLETE;
-int Sexy::SOUND_BONUS_EXPLOSION;
-int Sexy::SOUND_BALLDESTROYED1;
-int Sexy::SOUND_BALLDESTROYED2;
-int Sexy::SOUND_BALLDESTROYED3;
-int Sexy::SOUND_BALLDESTROYED4;
-int Sexy::SOUND_BALLDESTROYED5;
-int Sexy::SOUND_COMBO;
-int Sexy::SOUND_BUTTON2;
-int Sexy::SOUND_CHORAL1;
-int Sexy::SOUND_POP;
-int Sexy::SOUND_UFO;
+intptr_t Sexy::SOUND_BALLCLICK1;
+intptr_t Sexy::SOUND_BALLCLICK2;
+intptr_t Sexy::SOUND_BALLFIRE;
+intptr_t Sexy::SOUND_WARNING;
+intptr_t Sexy::SOUND_EXPLODE;
+intptr_t Sexy::SOUND_EARTHQUAKE;
+intptr_t Sexy::SOUND_FROGLAND;
+intptr_t Sexy::SOUND_JEWEL_APPEAR;
+intptr_t Sexy::SOUND_JEWEL_DISAPPEAR;
+intptr_t Sexy::SOUND_JEWEL_HIT;
+intptr_t Sexy::SOUND_CHAIN_BONUS;
+intptr_t Sexy::SOUND_GAP_BONUS;
+intptr_t Sexy::SOUND_ROLLING;
+intptr_t Sexy::SOUND_EXTRA_LIFE;
+intptr_t Sexy::SOUND_SLOWDOWN_BALL;
+intptr_t Sexy::SOUND_BACKWARDS_BALL;
+intptr_t Sexy::SOUND_ACCURACY_BALL;
+intptr_t Sexy::SOUND_TRAIL_LIGHT;
+intptr_t Sexy::SOUND_TRAIL_LIGHT_END;
+intptr_t Sexy::SOUND_GAME_START;
+intptr_t Sexy::SOUND_LEVEL_UP;
+intptr_t Sexy::SOUND_BAR_FULL;
+intptr_t Sexy::SOUND_LOST_LIFE;
+intptr_t Sexy::SOUND_GAME_OVER;
+intptr_t Sexy::SOUND_STAGE_COMPLETE;
+intptr_t Sexy::SOUND_TEMPLE_COMPLETE;
+intptr_t Sexy::SOUND_BONUS_EXPLOSION;
+intptr_t Sexy::SOUND_BALLDESTROYED1;
+intptr_t Sexy::SOUND_BALLDESTROYED2;
+intptr_t Sexy::SOUND_BALLDESTROYED3;
+intptr_t Sexy::SOUND_BALLDESTROYED4;
+intptr_t Sexy::SOUND_BALLDESTROYED5;
+intptr_t Sexy::SOUND_COMBO;
+intptr_t Sexy::SOUND_BUTTON2;
+intptr_t Sexy::SOUND_CHORAL1;
+intptr_t Sexy::SOUND_POP;
+intptr_t Sexy::SOUND_UFO;

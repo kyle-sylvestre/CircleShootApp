@@ -1,7 +1,6 @@
 #include "Zuma_Prefix.pch"
 
-#include <SexyAppFramework/DDInterface.h>
-#include <SexyAppFramework/D3DInterface.h>
+#include <SexyAppFramework/GLInterface.h>
 #include <SexyAppFramework/Graphics.h>
 #include <SexyAppFramework/Image.h>
 #include <SexyAppFramework/MemoryImage.h>
@@ -472,7 +471,8 @@ void Gun::DrawCachedGunImage(Graphics *g, float theZoom)
         aTrans.Translate(mCenterX + ((theZoom - 1.0f) * -50.0f),
                          mCenterY + ((theZoom - 1.0f) * 100.0f));
 
-        D3DInterface *aD3D = gSexyAppBase->mDDInterface->mD3DInterface;
+        //D3DInterface *aD3D = gSexyAppBase->mDDInterface->mD3DInterface;
+        auto *aD3D = gSexyAppBase->mGLInterface;
         aD3D->BltTransformed(mCachedGunImage, &g->mClipRect, Color(0, 0, 0, 96), Graphics::DRAWMODE_NORMAL, a4, aTrans, true);
 
         aTrans.LoadIdentity();

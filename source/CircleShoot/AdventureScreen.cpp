@@ -3,8 +3,7 @@
 #include <SexyAppFramework/ButtonListener.h>
 #include <SexyAppFramework/SexyAppBase.h>
 #include <SexyAppFramework/Font.h>
-#include <SexyAppFramework/DDImage.h>
-#include <SexyAppFramework/Image.h>
+#include <SexyAppFramework/GLImage.h>
 #include <SexyAppFramework/MemoryImage.h>
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/Widget.h>

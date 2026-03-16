@@ -1,13 +1,10 @@
 #include "Zuma_Prefix.pch"
 
 #include "CircleShootApp.h"
+#include <SDL2/SDL.h>
 
-#ifdef _WIN32
-//#if 0
-int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
-#else
-int main() {
-#endif
+int main(int argc, char *argv[])
+{
     Sexy::CircleShootApp app;
 
     app.Init();

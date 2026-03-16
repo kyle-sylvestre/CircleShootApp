@@ -246,7 +246,7 @@ int WayPointMgr::GetPriority(Ball *theBall)
     int aPrevPriority = GetPriority(theBall->GetWayPoint() - aRadius);
     int aNextPriority = GetPriority(theBall->GetWayPoint() + aRadius);
 
-    return max(aPrevPriority, aNextPriority);
+    return std::max(aPrevPriority, aNextPriority);
 }
 
 int WayPointMgr::GetPriority(int thePoint)

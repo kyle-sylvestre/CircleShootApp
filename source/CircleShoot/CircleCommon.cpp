@@ -49,7 +49,7 @@ const char *Sexy::gSmallGauntletStages[] = {
 };
 int Sexy::gSaveGameVersion = 5;
 
-int Sexy::gMainThreadId = 0;
+std::thread::id Sexy::gMainThreadId;
 
 typedef std::map<std::string, int> ResourceCountMap;
 ResourceCountMap gResourceCountMap;
@@ -93,11 +93,7 @@ int Sexy::AppRand()
 
 int Sexy::ThreadRand()
 {
-#ifdef _WIN32
-    bool isCurrent = GetCurrentThreadId() == gSexyAppBase->mPrimaryThreadId;
-#else
-    bool isCurrent = pthread_self() == gMainThreadId;
-#endif
+    bool isCurrent = (std::this_thread::get_id() == gSexyAppBase->mPrimaryThreadId);
 
     if (isCurrent)
     {

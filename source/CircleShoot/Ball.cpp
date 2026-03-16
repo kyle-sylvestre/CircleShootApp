@@ -712,9 +712,9 @@ void Ball::DrawExplosion(Graphics *g)
 
     if (mParticles != NULL)
     {
-        int aRed = min((gBrightBallColors[mType] >> 16) & 0xff + 200, 255);
-        int aGreen = min((gBrightBallColors[mType] >> 8) & 0xff + 200, 255);
-        int aBlue = min((gBrightBallColors[mType]) & 0xff + 200, 255);
+        int aRed = SDL_min((gBrightBallColors[mType] >> 16) & 0xff + 200, 255);
+        int aGreen = SDL_min((gBrightBallColors[mType] >> 8) & 0xff + 200, 255);
+        int aBlue = SDL_min((gBrightBallColors[mType]) & 0xff + 200, 255);
         int anAlpha = mClearCount > 20 ? 255 - (255 * mClearCount - 5100) / 20 : 255;
         g->SetColor(Color(aRed, aGreen, aBlue, anAlpha));
 

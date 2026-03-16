@@ -19,6 +19,52 @@ using namespace Sexy;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+char* itoa(int value, char* buffer, int radix)
+{
+    if (radix < 2 || radix > 36)
+    {
+        buffer[0] = '\0';
+        return buffer;
+    }
+
+    char* ptr = buffer;
+    char* ptr1 = buffer;
+    char tmp_char;
+    int tmp_value;
+
+    bool negative = false;
+
+    if (value < 0 && radix == 10)
+    {
+        negative = true;
+        value = -value;
+    }
+
+    do
+    {
+        tmp_value = value;
+        value /= radix;
+        int digit = tmp_value - value * radix;
+
+        *ptr++ = (digit < 10) ? ('0' + digit) : ('a' + digit - 10);
+    }
+    while (value);
+
+    if (negative)
+        *ptr++ = '-';
+
+    *ptr-- = '\0';
+
+    while (ptr1 < ptr)
+    {
+        tmp_char = *ptr;
+        *ptr-- = *ptr1;
+        *ptr1++ = tmp_char;
+    }
+
+    return buffer;
+}
+
 StatsDialog::StatsDialog(Board *theBoard, bool doCounter) : CircleDialog(Sexy::IMAGE_DIALOG_BACK, Sexy::IMAGE_DIALOG_BUTTON, DialogType_Stats, true,
                                                                          "STATS", "", "OK",
                                                                          Dialog::BUTTONS_FOOTER, true)

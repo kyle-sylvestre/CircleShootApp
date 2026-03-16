@@ -47,7 +47,7 @@ struct LetterStamp
 	int mUpdateCnt;
 	IntPoint mPos;
 	std::string mLetter;
-	ulong mColor;
+	uint32_t mColor;
 	int mFont;
 	int mDuration;
 	MemoryImage *mImage;

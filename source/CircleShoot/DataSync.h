@@ -24,19 +24,19 @@ namespace Sexy
     public:
         FILE *mFileHandle;
         const void *mMemoryHandle;
-        ulong mMemoryLength;
-        ulong mMemoryPosition;
+        uint32_t mMemoryLength;
+        uint32_t mMemoryPosition;
         bool mDeallocate;
 
         explicit DataReader();
         virtual ~DataReader();
 
-        void OpenMemory(const void *theMemory, ulong theLength, bool deallocate);
+        void OpenMemory(const void *theMemory, uint32_t theLength, bool deallocate);
         bool OpenFile(const std::string &theFileName);
         void Close();
 
-        void ReadBytes(void *theBuffer, ulong theLength);
-        ulong ReadLong();
+        void ReadBytes(void *theBuffer, uint32_t theLength);
+        uint32_t ReadLong();
         ushort ReadShort();
         uchar ReadByte();
         bool ReadBool();
@@ -51,18 +51,18 @@ namespace Sexy
     public:
         FILE *mFileHandle;
         void *mMemoryHandle;
-        ulong mMemoryPosition;
-        ulong mMemoryLength;
+        uint32_t mMemoryPosition;
+        uint32_t mMemoryLength;
 
         explicit DataWriter();
         virtual ~DataWriter();
 
-        void OpenMemory(ulong theLength);
+        void OpenMemory(uint32_t theLength);
         void Close();
-        void EnsureCapacity(ulong theLength);
+        void EnsureCapacity(uint32_t theLength);
 
-        void WriteBytes(const void *theBuffer, ulong theLength);
-        void WriteLong(ulong theValue);
+        void WriteBytes(const void *theBuffer, uint32_t theLength);
+        void WriteLong(uint32_t theValue);
         void WriteShort(ushort theValue);
         void WriteByte(uchar theValue);
         void WriteBool(bool theValue);
@@ -85,10 +85,10 @@ namespace Sexy
         explicit DataSync(DataReader &reader);
         explicit DataSync(DataWriter &writer);
 
-        void SyncBytes(void *theValue, ulong theSize);
+        void SyncBytes(void *theValue, uint32_t theSize);
         void SyncLong(int &theValue);
         void SyncLong(unsigned int &theValue);
-        void SyncLong(ulong &theValue);
+        //void SyncLong(uint32_t &theValue);
         void SyncShort(int &theValue);
         void SyncShort(ushort &theValue);
         void SyncSShort(int &theValue);
@@ -119,8 +119,8 @@ namespace Sexy
         if (theSync.mReader != NULL)
         {
             theValue.clear();
-            ulong aLength = theSync.mReader->ReadLong();
-            for (ulong i = 0; i < aLength; i++)
+            uint32_t aLength = theSync.mReader->ReadLong();
+            for (uint32_t i = 0; i < aLength; i++)
             {
                 typename type::value_type aValue;
                 theValue.push_back(aValue);
