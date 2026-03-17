@@ -131,8 +131,9 @@ SpriteMgr::SpriteMgr()
     mInSpace = false;
     mSpaceScroll = true;
     mNebulaImage = NULL;
-    // !PORT
-    mBackgroundImage = new GLImage(gSexyAppBase->mGLInterface);
+    // TODO: GLImage not setting width and height in Create
+    //mBackgroundImage = new DDImage(gSexyAppBase->mDDInterface);
+    mBackgroundImage = new MemoryImage;
     mBackgroundImage->Create(640, 480);
 }
 
