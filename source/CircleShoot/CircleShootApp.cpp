@@ -1271,3 +1271,11 @@ void CircleShootApp::ReturnToMainMenu()
 {
     DoConfirmMainMenuDialog();
 }
+bool CircleShootApp::ChangeDirHook(const char *theIntendedPath)
+{
+	return true;
+}
+void CircleShootApp::CloseRequestAsync()
+{
+	Shutdown();
+}

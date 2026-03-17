@@ -128,6 +128,8 @@ namespace Sexy
 
         void EndHelpScreen();
         void ReturnToMainMenu();
+		bool ChangeDirHook(const char *theIntendedPath);
+		void CloseRequestAsync();
     };
 
 };
