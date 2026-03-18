@@ -6,10 +6,6 @@ using namespace Sexy;
 SDL_Thread *xCreateThread(SexyThreadCallback *cb, void *p)
 {
     SDL_Thread *result = NULL;
-#if defined(SDL_PLATFORM_EMSCRIPTEN)
-    SDL_Thread *result = NULL;
-    cb(p);
-#else
     struct Glue
     {
         SexyThreadCallback *cb;
@@ -27,7 +23,6 @@ SDL_Thread *xCreateThread(SexyThreadCallback *cb, void *p)
     glue->params = p;
     
     result = SDL_CreateThreadWithStackSize(Callback, "SexyThread", 4*1024*1024, glue);
-#endif
     return result;
 }
 void WorkerThread::WaitForTask()
