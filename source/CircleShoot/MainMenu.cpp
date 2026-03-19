@@ -431,6 +431,9 @@ void MainMenu::Update()
     Widget::Update();
     CalcEyePos();
 
+    // TODO: new user dialog flickering from glClear
+    MarkDirty();
+
     if (gButtonSequenceCount > 2)
     {
         DoUFO();
