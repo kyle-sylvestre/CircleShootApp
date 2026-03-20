@@ -121,7 +121,7 @@ Board::Board(CircleShootApp *theApp)
     mApp = theApp;
     mGun = new Gun();
 
-    mMenuButton = new ButtonWidget(0, this);
+    mMenuButton = MakeButton(0, this, "", CircleButton::CB_ClickSound, Sexy::IMAGE_MENU_BUTTON, 3);
     mContinueButton = MakeButton(1, this, "CONTINUE", CircleButton::CB_ClickSound, NULL, 3);
     mContinueButton->SetVisible(false);
 
