@@ -715,8 +715,6 @@ bool LevelParser::DoParseLevel(XMLElement &theElem, bool isLevel)
     if (GetAttribute(theElem, "image", aVal))
         aDesc.mImagePath = GetPath(aVal);
 
-    SDL_Log("%s", aDesc.mImagePath.c_str());
-
     if (GetAttribute(theElem, "space", aVal))
         aDesc.mInSpace = strcasecmp(aVal.c_str(), "true") == 0;
 
