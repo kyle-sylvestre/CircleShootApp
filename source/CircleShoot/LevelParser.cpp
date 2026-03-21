@@ -290,36 +290,32 @@ LevelDesc &LevelParser::GetRandomBoard(int theDifficulty, int theLevel, UserProf
     }
 }
 
-#include <unistd.h>
 bool LevelParser::ParseLevelFile(const std::string &theFilename)
 {
     mLevels.clear();
     mXMLParser = new XMLParser();
-    mXMLParser->OpenFile(theFilename);
-    
-    char buf[1024]; getcwd(buf, sizeof(buf));
-
-    XMLElement anElement;
-    while (!mXMLParser->HasFailed())
+    if (mXMLParser->OpenFile(theFilename))
     {
-        if (!mXMLParser->NextElement(&anElement))
+        XMLElement anElement;
+        while (!mXMLParser->HasFailed())
         {
-            Fail(mXMLParser->GetErrorText());
-        }
-
-        if (anElement.mType == XMLElement::TYPE_START)
-        {
-            if (anElement.mValue == "Levels")
+            if (!mXMLParser->NextElement(&anElement))
             {
-                return DoParseLevels();
+                Fail(mXMLParser->GetErrorText());
             }
 
-            break;
+            if (anElement.mType == XMLElement::TYPE_START)
+            {
+                if (anElement.mValue == "Levels")
+                {
+                    return DoParseLevels();
+                }
+
+                break;
+            }
         }
+        Fail("Expecting Levels tag");
     }
-
-    Fail("Expecting Levels tag");
-
     return DoParseLevels();
 }
 
