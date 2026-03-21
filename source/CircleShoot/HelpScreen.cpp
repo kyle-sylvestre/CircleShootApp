@@ -150,17 +150,17 @@ void HelpWidget1::Draw(Graphics *g)
                                 mWidth - 8, 2 * Sexy::FONT_DIALOG->GetHeight());
 
     g->SetColor(Color(0xFFFF00));
-    WriteWordWrapped(g, aTopTextRect, "Shoot balls by clicking on screen where you want the ball to go.", -1, 0);
+    WriteWordWrapped(g, aTopTextRect, LS(STRING_ID_SHOOT_BALLS_BY_CLICKING_ON_SCREEN), -1, 0);
 
     g->SetColor(Color(0xFFA500));
-    WriteWordWrapped(g, aBottomTextRect, "The gem in the back of the frog shows the color of the next ball.", -1, 0);
+    WriteWordWrapped(g, aBottomTextRect, LS(STRING_ID_THE_GEM_IN_THE_BACK_OF_THE_FROG), -1, 0);
 
     if (mUpdateCnt - mLastGunShotCnt < 100)
     {
         Sexy::Color aColor = Color(0xFFFFFF);
         g->SetColor(aColor);
         g->SetFont(Sexy::FONT_PLAIN);
-        g->DrawString("CLICK!", mLastGunShotPoint.mX - 65, mLastGunShotPoint.mY - 10);
+        g->DrawString(LS(STRING_ID_CLICK), mLastGunShotPoint.mX - 65, mLastGunShotPoint.mY - 10);
         g->SetFont(Sexy::FONT_DIALOG);
         g->DrawLine(mLastGunShotPoint.mX - 3, mLastGunShotPoint.mY - 3,
                     mLastGunShotPoint.mX - 8, mLastGunShotPoint.mY - 8);
@@ -401,10 +401,10 @@ void HelpWidget2::Draw(Graphics *g)
                                 mWidth - 8, 2 * Sexy::FONT_DIALOG->GetHeight());
 
     g->SetColor(Color(0xFFFF00));
-    WriteWordWrapped(g, aTopTextRect, "Clear balls by getting three or more of the same color in a row.", -1, 0);
+    WriteWordWrapped(g, aTopTextRect, LS(STRING_ID_CLEAR_BALLS_BY), -1, 0);
 
     g->SetColor(Color(0xFFA500));
-    WriteWordWrapped(g, aBottomTextRect, "Like colored balls attract and can create chain reactions!", -1, 0);
+    WriteWordWrapped(g, aBottomTextRect, LS(STRING_ID_LIKE_COLORED_BALLS_ATTRACT), -1, 0);
 }
 
 void HelpWidget2::Reset()
@@ -468,13 +468,13 @@ void HelpWidget3::Draw(Graphics *g)
 
     Rect aTopTextRect = Rect(30, mHeight - 2 * Sexy::FONT_DIALOG->GetHeight() - 15, 160, 0);
     g->SetColor(Color(0xFFFF00));
-    WriteWordWrapped(g, aTopTextRect, "Don't let the balls reach the skull!", -1, 0);
+    WriteWordWrapped(g, aTopTextRect, LS(STRING_ID_DONT_LET_THE_BALLS_REACH_THE_SKULL), -1, 0);
 
     g->DrawImageCel(Sexy::IMAGE_COIN, 282, 45, (mUpdateCnt / 4) % 30);
 
     Rect aBottomTextRect = Rect(220, mHeight - 2 * Sexy::FONT_DIALOG->GetHeight() - 15, 160, 0);
     g->SetColor(Color(0xFFFF00));
-    WriteWordWrapped(g, aBottomTextRect, "Shoot coins for extra points!", -1, 0);
+    WriteWordWrapped(g, aBottomTextRect, LS(STRING_ID_SHOOT_COINS_FOR_EXTRA_POINTS), -1, 0);
 
     mGun->SetPos(500, 65);
     mGun->Draw(g);
@@ -487,14 +487,14 @@ void HelpWidget3::Draw(Graphics *g)
         frame = 0;
         g->SetFont(Sexy::FONT_PLAIN);
         g->SetColor(Color(0xFFFFFF));
-        g->DrawString("CLICK!", 560, 55);
+        g->DrawString(LS(STRING_ID_CLICK), 560, 55);
         g->SetFont(Sexy::FONT_DIALOG);
     }
 
     g->DrawImageCel(Sexy::IMAGE_RIGHT_MOUSE, 580, 60, frame);
 
     g->SetColor(Color(0xFFFF00));
-    WriteWordWrapped(g, aRightTextRect, "Right mouse button will swap the balls.", -1, 0);
+    WriteWordWrapped(g, aRightTextRect, LS(STRING_ID_RIGHT_MOUSE_BUTTON_WILL_SWAP_THE_BALLS), -1, 0);
 }
 
 HelpBack::HelpBack() : Widget()
@@ -522,7 +522,7 @@ HelpScreen::HelpScreen() : Widget()
     mHelpWidget3 = new HelpWidget3();
     mHelpBack = new HelpBack();
     mShowHelpCheckbox = Sexy::MakeCheckbox(0, this);
-    mOKButton = MakeButton(0, this, "OK", CircleButton::CB_ClickSound, NULL, 3);
+    mOKButton = MakeButton(0, this, LS(DIALOG_BUTTON_OK), CircleButton::CB_ClickSound, NULL, 3);
     mShowHelpCheckbox->mChecked = !GetCircleShootApp()->mProfile->mShowHelpScreen;
 }
 
@@ -554,7 +554,7 @@ void HelpScreen::Draw(Graphics *g)
     g->DrawImage(Sexy::IMAGE_HELP_FRONT, 0, 0);
     g->SetFont(Sexy::FONT_DIALOG);
     g->SetColor(Color(0xFFFF00));
-    DrawCheckboxText(g, "Don't show this screen at startup.", mShowHelpCheckbox);
+    DrawCheckboxText(g, LS(STRING_ID_DONT_SHOW_THIS_SCREEN_AT_STARTUP), mShowHelpCheckbox);
 }
 
 void HelpScreen::AddedToManager(WidgetManager *theWidgetManager)

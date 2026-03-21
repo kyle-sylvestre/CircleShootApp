@@ -1,6 +1,7 @@
 #ifndef __SEXY_CIRCLECOMMON_H__
 #define __SEXY_CIRCLECOMMON_H__
 
+#include "Localization.h"
 #include <SexyAppFramework/Point.h>
 #include <SDL2/SDL.h>
 #include <thread>
@@ -86,8 +87,8 @@ namespace Sexy
 
     extern std::thread::id gMainThreadId;
 
-    extern const char *gSmallGauntletStages[];
-    extern const char *gGauntletStages[];
+    const char *gSmallGauntletStages(int stage); // localization.cpp
+    const char *gGauntletStages(int stage); // localization.cpp
     extern uint gTextBallColors[MAX_BALL_COLORS];
     extern uint gDarkBallColors[MAX_BALL_COLORS];
     extern uint gBrightBallColors[MAX_BALL_COLORS];

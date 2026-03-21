@@ -93,6 +93,8 @@ void CircleShootApp::Init()
 {
     SexyAppBase::Init();
 
+    SetupLocalizations();
+    LoadProperties();
     mMaxExecutions = GetInteger("MaxExecutions", 0);
     mMaxPlays = GetInteger("MaxPlays", 0);
     mMaxTime = GetInteger("MaxTime", 60);
@@ -635,7 +637,7 @@ void CircleShootApp::DoStatsDialog(bool slide, bool doCounter)
 void CircleShootApp::DoNextTempleDialog()
 {
     mDidNextTempleDialog = true;
-    DoDialog(DialogType_NextTemple, true, "Enter Next Temple", "You are now going to enter the next temple.\nGet Ready!", "", Dialog::BUTTONS_OK_CANCEL);
+    DoDialog(DialogType_NextTemple, true, LS(STRING_ID_ENTER_NEXT_TEMPLE), LS(STRING_ID_YOU_ARE_NOW_GOING_TO_ENTER_THE_NEXT_TEMPLE), "", Dialog::BUTTONS_OK_CANCEL);
 }
 
 void CircleShootApp::FinishNextTempleDialog(bool save)
@@ -681,8 +683,8 @@ void CircleShootApp::DoConfirmDeleteUserDialog(const std::string &theName)
 {
     KillDialog(DialogType_ConfirmDeleteUser);
 
-    std::string aText = Sexy::StrFormat("This will permanently remove '%s' from the player roster!", theName.c_str());
-    DoDialog(DialogType_ConfirmDeleteUser, true, "Are You Sure?", aText, "", Dialog::BUTTONS_YES_NO);
+    std::string aText = Sexy::StrFormat(LS(STRING_ID_THIS_WILL_PERMANENTLY_REMOVE_PLAYER_ROSTER), theName.c_str());
+    DoDialog(DialogType_ConfirmDeleteUser, true, LS(STRING_ID_ARE_YOU_SURE_QM), aText, "", Dialog::BUTTONS_YES_NO);
 }
 
 void CircleShootApp::FinishUserDialog(bool confirm)
@@ -719,9 +721,11 @@ void CircleShootApp::FinishCreateUserDialog(bool confirm)
     std::string aName = aDialog->GetName();
     if (confirm && aName.empty())
     {
-        DoDialog(DialogType_NameEntry, true, "Enter Your Name",
-                 "Enter your name to create a new user profile for storing high score data and games in progress.",
-                 "OK", Dialog::BUTTONS_FOOTER);
+        DoDialog(DialogType_NameEntry, true, 
+                 LS(STRING_ID_ENTER_YOUR_NAME),
+                 LS(STRING_ID_ENTER_YOUR_NAME_TO_CREATE_A_NEW_USER_PROFILE),
+                 LS(DIALOG_BUTTON_OK),
+                 Dialog::BUTTONS_FOOTER);
         return;
     }
 
@@ -735,9 +739,11 @@ void CircleShootApp::FinishCreateUserDialog(bool confirm)
     }
     else if (!confirm || aName.empty())
     {
-        DoDialog(DialogType_NameEntry, true, "Enter Your Name",
-                 "Enter your name to create a new user profile for storing high score data and games in progress.",
-                 "OK", Dialog::BUTTONS_FOOTER);
+        DoDialog(DialogType_NameEntry, true, 
+                 LS(STRING_ID_ENTER_YOUR_NAME),
+                 LS(STRING_ID_ENTER_YOUR_NAME_TO_CREATE_A_NEW_USER_PROFILE),
+                 LS(DIALOG_BUTTON_OK),
+                 Dialog::BUTTONS_FOOTER);
         return;
     }
 
@@ -757,9 +763,11 @@ void CircleShootApp::FinishCreateUserDialog(bool confirm)
     else
     {
         // yup, it's 10 here
-        DoDialog(DialogType_NameEntry, true, "Name Conflict",
-                 "The name you entered is already being used.  Please enter a unique player name.",
-                 "OK", Dialog::BUTTONS_FOOTER);
+        DoDialog(DialogType_NameEntry, true, 
+                 LS(STRING_ID_NAME_CONFLICT),
+                 LS(STRING_ID_THE_NAME_YOU_ENTERED_IS_ALREADY_BEING_USED),
+                 LS(DIALOG_BUTTON_OK),
+                 Dialog::BUTTONS_FOOTER);
     }
 }
 
@@ -797,9 +805,11 @@ void CircleShootApp::FinishRenameUserDialog(bool confirm)
         }
         else
         {
-            DoDialog(DialogType_NameConflict, true, "Name Conflict",
-                     "The name you entered is already being used.  Please enter a unique player name.",
-                     "OK", Dialog::BUTTONS_FOOTER);
+            DoDialog(DialogType_NameConflict, true, 
+                     LS(STRING_ID_NAME_CONFLICT),
+                     LS(STRING_ID_THE_NAME_YOU_ENTERED_IS_ALREADY_BEING_USED),
+                     LS(DIALOG_BUTTON_OK),
+                     Dialog::BUTTONS_FOOTER);
         }
     }
 }
@@ -862,8 +872,8 @@ void CircleShootApp::DoConfirmMainMenuDialog()
 {
     if (mBoard && mBoard->NeedSaveGame())
     {
-        Dialog *aDialog = DoDialog(DialogType_ConfirmMainMenu, true, "Leave Game?", "Your game session will be saved upon leaving. Do you want to continue?", "", Dialog::BUTTONS_OK_CANCEL);
-        aDialog->mYesButton->mLabel = "Leave";
+        Dialog *aDialog = DoDialog(DialogType_ConfirmMainMenu, true, LS(STRING_ID_LEAVE_GAME_QM), LS(STRING_ID_DO_YOU_WANT_TO_CONTINUE_QM), "", Dialog::BUTTONS_OK_CANCEL);
+        aDialog->mYesButton->mLabel = LS(STRING_ID_LEAVE);
 
         OptionsDialog *aDialogOptions = (OptionsDialog *)GetDialog(DialogType_Options);
         if (aDialogOptions)
@@ -883,7 +893,7 @@ void CircleShootApp::FinishUpdateDialogs(int theDialogId, bool confirm)
 
 void CircleShootApp::DoConfirmQuitDialog()
 {
-    DoDialog(DialogType_ConfirmQuit, true, "Quit Zuma?", "Are you sure you want to\nquit the game?", "", Dialog::BUTTONS_YES_NO);
+    DoDialog(DialogType_ConfirmQuit, true, LS(STRING_ID_QUIT_ZUMA_QM), LS(STRING_ID_QUIT_THE_GAME_QM), "", Dialog::BUTTONS_YES_NO);
 }
 
 void CircleShootApp::SwitchSong(int id)
@@ -909,18 +919,20 @@ void CircleShootApp::DoOptionsDialog()
 
 void CircleShootApp::DoConfirmContinueDialog(const std::string &theVerboseLevelString, const std::string &theDisplayName, int theScore)
 {
-    std::string aScore = Sexy::StrFormat("%s (%s)\r\nScore: %d\r\n", theVerboseLevelString.c_str(), theDisplayName.c_str(), theScore);
-    std::string aText = "Your game was saved when you quit.  If you do not continue now, the game will be lost.\r\n"
+    std::string aScore = Sexy::StrFormat(LS(STRING_ID_SCORE), theVerboseLevelString.c_str(), theDisplayName.c_str(), theScore);
+    std::string aText = Sexy::StrFormat("%s\r\n"
                         "\r\n"
-                        "Do you want to continue your last game?"
+                        "%s"
                         "\r\n"
-                        "\r\n" +
+                        "\r\n", 
+                        LS(STRING_ID_YOUR_GAME_WAS_SAVED_WHEN_YOU_QUIT),
+                        LS(STRING_ID_DO_YOU_WANT_TO_CONTINUE_YOUR_LAST_GAME_QM)) +
                         aScore;
 
-    Dialog *aDialog = NewDialog(DialogType_ConfirmContinue, true, "CONTINUE?", aText, "", Dialog::BUTTONS_OK_CANCEL);
+    Dialog *aDialog = NewDialog(DialogType_ConfirmContinue, true, LS(STRING_ID_CONTINUE_QM), aText, "", Dialog::BUTTONS_OK_CANCEL);
 
-    aDialog->mYesButton->mLabel = "Continue";
-    aDialog->mNoButton->mLabel = "New Game";
+    aDialog->mYesButton->mLabel = LS(STRING_ID_SM_CONTINUE);
+    aDialog->mNoButton->mLabel = LS(STRING_ID_NEW_GAME);
 
     AddDialog(DialogType_ConfirmContinue, aDialog);
 }
@@ -929,7 +941,7 @@ void CircleShootApp::DoGetReadyDialog()
 {
     if (mDialogMap.empty())
     {
-        DoDialog(DialogType_GetReady, true, "GO", "", "Get Ready!", Dialog::BUTTONS_FOOTER);
+        DoDialog(DialogType_GetReady, true, LS(STRING_ID_GO), "", LS(STRING_ID_GET_READY), Dialog::BUTTONS_FOOTER);
         if (mBoard)
         {
             mBoard->Pause(true, true);

@@ -296,7 +296,7 @@ void TransitionMgr::DrawStageCompleteText(Graphics *g)
             sg.ClipRect(0, 0, mBoard->mGun->GetCenterX(), 480);
     }
 
-    std::string aText = "COMPLETE";
+    std::string aText = LS(STRING_ID_COMPLETE);
     int center = Sexy::FONT_HUGE->StringWidth(aText);
 
     sg.SetColor(Color(0xFFFF00));
@@ -393,7 +393,7 @@ void TransitionMgr::DrawTempleComplete(Graphics *g)
     g->SetColor(Color(0xFFFF00));
     g->SetFont(Sexy::FONT_HUGE);
 
-    mBoard->WriteCenteredLine(g, 120, "CONGRATULATIONS!");
+    mBoard->WriteCenteredLine(g, 120, LS(STRING_ID_CONGRATULATIONS));
 
     g->DrawImage(Sexy::IMAGE_GOD_HEAD,
                  (cos(((mStateCount * SEXY_PI) / 180.0f) * 2) * 5.0f) + 50.0f,
@@ -796,11 +796,11 @@ void TransitionMgr::DoStageComplete()
     std::string aText;
     if (!mBoard->mPracticeBoard.empty())
     {
-        aText = gGauntletStages[mBoard->mLevelDesc->mStage];
+        aText = gGauntletStages(mBoard->mLevelDesc->mStage);
     }
     else
     {
-        aText = Sexy::StrFormat("STAGE %d", mBoard->mLevelDesc->mStage + 1);
+        aText = Sexy::StrFormat(LS(STRING_ID_STAGE), mBoard->mLevelDesc->mStage + 1);
     }
 
     int aTextWidth = 0;
@@ -855,7 +855,7 @@ void TransitionMgr::DoStageComplete()
     AddFrogMove(em2, em3, 50, 0);
     AddFrogMove(em3, em4, 30, 0);
 
-    aText = "COMPLETE";
+    aText = LS(STRING_ID_COMPLETE);
 
     int aCompWidth = aFont->StringWidth(aText);
     int v42 = 0;
@@ -886,31 +886,29 @@ void TransitionMgr::DoTempleComplete()
     mStateCount = 0;
     mState = TransitionState_TempleComplete;
 
-    const char *aText[5];
+    std::string aText[5];
     if (mBoard->mApp->mProfile->mHasWon)
     {
-        aText[0] = "Ribbit.  (I beg to differ.)";
-        aText[1] = "Ribbit.  (I shall never give up.)";
-        aText[2] = "Ribbit.  (I will fulfill the prophecy.)";
-        aText[3] = "Ribbit?  (In space?)";
-        aText[4] = "Ribbit!  (Werd!)";
+        aText[0] = Sexy::StrFormat("%s  %s", LS(STRING_ID_RIBBIT), LS(STRING_ID_I_BEG_TO_DIFFER));
+        aText[1] = Sexy::StrFormat("%s  %s", LS(STRING_ID_RIBBIT), LS(STRING_ID_NEVER_GIVE_UP));
+        aText[2] = Sexy::StrFormat("%s  %s", LS(STRING_ID_RIBBIT), LS(STRING_ID_FULFILL_THE_PROPHECY));
+        aText[3] = Sexy::StrFormat("%s  %s", LS(STRING_ID_RIBBIT), LS(STRING_ID_IN_SPACE));
+        aText[4] = Sexy::StrFormat("%s  %s", LS(STRING_ID_RIBBIT), LS(STRING_ID_WERD));
     }
     else
     {
-        aText[0] = "Ribbit.";
-        aText[1] = "Ribbit.";
-        aText[2] = "Ribbit.";
-        aText[3] = "Ribbit?";
-        aText[4] = "Ribbit!";
+        aText[0] = LS(STRING_ID_RIBBIT);
+        aText[1] = LS(STRING_ID_RIBBIT);
+        aText[2] = LS(STRING_ID_RIBBIT);
+        aText[3] = LS(STRING_ID_RIBBIT_QM);
+        aText[4] = LS(STRING_ID_RIBBIT_EM);
     }
 
     switch (mBoard->mLevelDesc->mStage / 3)
     {
     case 0:
     {
-        int aStagger = AddTextBlurbWrap("Interloper of puny!  You suppose the secret of Zuma it is possible to take the knowing so easily?  "
-                                        "No!  There is defect for your thinking!  Our cryptic hidden nature cannot be discovered "
-                                        "so directly.  Three mystery shrines protect method!  Never you will strike past them!",
+        int aStagger = AddTextBlurbWrap(LS(STRING_ID_INTERLOPER_OF_PUNY),
                                         220, 180, 380, 150);
         aStagger = AddTextBlurb(aText[0], 200, 380, aStagger + 100);
         mResetFrame = aStagger + 100;
@@ -918,9 +916,7 @@ void TransitionMgr::DoTempleComplete()
     }
     case 1:
     {
-        int aStagger = AddTextBlurbWrap("I see what?!?  You have lived still.  Is it possible to be the one of which the ancient "
-                                        "prophecy speaks?  It was sent in order perhaps to release me from my wicked capture person finally.  "
-                                        "But no namely this was the story of the exactly old wive.  You want to live, now retreat!",
+        int aStagger = AddTextBlurbWrap(LS(STRING_ID_I_SEE_WHAT),
                                         220, 180, 380, 150);
         aStagger = AddTextBlurb(aText[1], 200, 380, aStagger + 100);
         mResetFrame = aStagger + 100;
@@ -928,9 +924,7 @@ void TransitionMgr::DoTempleComplete()
     }
     case 2:
     {
-        int aStagger = AddTextBlurbWrap("As for me it is not possible to believe!  Your power namely that is large!  But there is one "
-                                        "more temple which you do not find, that the Zuma deeply buried under the land.  It was hidden, "
-                                        "it is the temple of secret!  You the final temple must fight in order to take the cover of position of my jail!!",
+        int aStagger = AddTextBlurbWrap(LS(STRING_ID_NOT_POSSIBLE_TO_BELIEVE),
                                         220, 180, 380, 150);
         aStagger = AddTextBlurb(aText[1], 200, 380, aStagger + 100);
         mResetFrame = aStagger + 100;
@@ -938,23 +932,19 @@ void TransitionMgr::DoTempleComplete()
     }
     case 3:
     {
-        std::string aStr = "The final temple of Zuma was struck!  Your extreme power is not possible to be defeated!  "
-                           "As for me it can taste the taste whose almost freedom is sweet sweetly.  But God of the sun can "
-                           "be imprisoned at only that true house.";
+        std::string aStr = LS(STRING_ID_FINAL_TEMPLE_STRUCK);
         int aStagger = AddTextBlurbWrap(aStr, 220, 180, 380, 150);
         aStagger - AddTextBlurb(aText[1], 200, 380, aStagger + 100);
 
         int aTextY = 6 * Sexy::FONT_DIALOG->GetLineSpacing() + 180;
-        aStagger - AddTextBlurbWrap("We come from the star, return to the star!  It is of you to rescue of my star.",
+        aStagger - AddTextBlurbWrap(LS(STRING_ID_WE_COME_FROM_STAR),
                                     220, aTextY, 380, aStagger + 50);
         mResetFrame = aStagger + 100;
         break;
     }
     case 4:
     {
-        int aStagger = AddTextBlurbWrap("Excellent work, mighty frog one!  You obtained your lawful place of the stars, at the side of the ancient "
-                                        "ruler of the Zuma.  In the future, as for me, you are known as our sibling.  I will call you brother, "
-                                        "and we control the outer space together!  It is joyous news!  Now we are to the dance!",
+        int aStagger = AddTextBlurbWrap(LS(STRING_ID_EXCELLENT_WORK_FROG_ONE),
                                         220, 180, 380, 150);
         aStagger = AddTextBlurb(aText[4], 200, 380, aStagger + 100);
         mResetFrame = aStagger + 100;
@@ -1165,7 +1155,7 @@ void TransitionMgr::UpdateStageComplete()
 {
     if (mStateCount == mStageCompleteFrame + 50)
     {
-        std::string aText = "COMPLETE";
+        std::string aText = LS(STRING_ID_COMPLETE);
         int aCompWidth = Sexy::FONT_HUGE->StringWidth(aText); // return ignored??
 
         for (int i = 0; i < 500; i++)
@@ -1296,15 +1286,15 @@ void TransitionMgr::UpdateLosing()
 
     if (mBoard->mLives <= 0)
     {
-        aText = "GAME OVER";
+        aText = LS(STRING_ID_GAME_OVER);
     }
     else if (mBoard->mLives == 1)
     {
-        aText = Sexy::StrFormat("LAST LIFE!"); // why is this a StrFormat?
+        aText = LS(STRING_ID_LAST_LIFE);
     }
     else
     {
-        aText = Sexy::StrFormat("%d LIVES LEFT", mBoard->mLives);
+        aText = Sexy::StrFormat(LS(STRING_ID_LIVES_LEFT), mBoard->mLives);
     }
 
     int len = Sexy::FONT_HUGE->StringWidth(aText);

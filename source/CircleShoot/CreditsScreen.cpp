@@ -25,7 +25,7 @@ CreditsScreen::CreditsScreen(bool happyEnd)
 	mSpriteMgr = new SpriteMgr();
 	mSpriteMgr->SetupSpace();
 
-	mWhateverButton = MakeButton(0, this, "Whatever", CircleButton::CB_ClickSound, NULL, 3);
+	mWhateverButton = MakeButton(0, this, LS(STRING_ID_WHATEVER), CircleButton::CB_ClickSound, NULL, 3);
 
 	if (happyEnd)
 	{
@@ -64,29 +64,29 @@ void CreditsScreen::Draw(Graphics *g)
 	}
 
 	static CreditsLine aCredits[] = {
-		{Sexy::FONT_HUGE, "CREDITS", 50},
-		{Sexy::FONT_TITLE, "Game Design", 0},
+		{Sexy::FONT_HUGE, LS(STRING_ID_CREDITS), 50},
+		{Sexy::FONT_TITLE, LS(STRING_ID_GAME_DESIGN), 0},
 		{Sexy::FONT_BROWNTITLE, "Jason Kapalka", 35},
-		{Sexy::FONT_TITLE, "Programming", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_PROGRAMMING), 0},
 		{Sexy::FONT_BROWNTITLE, "Brian \"Ace\" Rothstein", 35},
-		{Sexy::FONT_TITLE, "Art", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_ART), 0},
 		{Sexy::FONT_BROWNTITLE, "Walter \"Straitjacket\" Wilson", 35},
-		{Sexy::FONT_TITLE, "Sound FX", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_SOUND_FX), 0},
 		{Sexy::FONT_BROWNTITLE, "Stephane Brault", 35},
-		{Sexy::FONT_TITLE, "Music", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_MUSIC), 0},
 		{Sexy::FONT_BROWNTITLE, "Phillipe Charon", 35},
-		{Sexy::FONT_TITLE, "Level Design", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_LEVEL_DESIGN), 0},
 		{Sexy::FONT_BROWNTITLE, "Ben Lyon", 35},
-		{Sexy::FONT_TITLE, "QA", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_QA), 0},
 		{Sexy::FONT_BROWNTITLE, "Eric Harman", 0},
 		{Sexy::FONT_BROWNTITLE, "Shawn Conard", 0},
 		{Sexy::FONT_BROWNTITLE, "Brenna Flood", 35},
 		{Sexy::FONT_BROWNTITLE, "Chad Zoellner", 35},
-		{Sexy::FONT_TITLE, "PopCap Framework", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_POPCAP_FRAMEWORK), 0},
 		{Sexy::FONT_BROWNTITLE, "Brian Fiete", 35},
-		{Sexy::FONT_TITLE, "Biz Dev", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_BIZ_DEV), 0},
 		{Sexy::FONT_BROWNTITLE, "Don Walters", 35},
-		{Sexy::FONT_TITLE, "Special Thanks To", 0},
+		{Sexy::FONT_TITLE, LS(STRING_ID_SPECIAL_THANKS_TO), 0},
 		{Sexy::FONT_BROWNTITLE, "Jordin Baugh", 0},
 		{Sexy::FONT_BROWNTITLE, "John Vechey", 0},
 		{Sexy::FONT_BROWNTITLE, "Shanon Lyon", 0},

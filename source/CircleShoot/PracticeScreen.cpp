@@ -38,7 +38,7 @@ PracticeScreen::PracticeScreen()
 
 	mThumbnail = NULL;
 	mScoreSet = new std::multiset<HighScore>();
-	mGradientImageLocked = CreateGradientImage("LoCKED", 0x85);
+	mGradientImageLocked = CreateGradientImage(LS(STRING_ID_LOCKED), 0x85);
 	mGradientImageQuestionMark = CreateGradientImage("?", 0xFF);
 
 	mCurrentBoard = GetCircleShootApp()->mProfile->mLastPracticeBoard;
@@ -233,7 +233,7 @@ void PracticeScreen::Draw(Graphics *g)
 				  427);
 
 	g->SetColor(Color(0xFFFF00));
-	aText = mIsEndless ? "Survival" : "Practice";
+	aText = mIsEndless ? LS(STRING_ID_SURVIVAL) : LS(STRING_ID_PRACTICE);
 	g->DrawString(aText,
 				  150 + (mThumbnail->mWidth - Sexy::FONT_MAIN10OUTLINE->StringWidth(aText)),
 				  260);
@@ -316,19 +316,19 @@ void PracticeScreen::Draw(Graphics *g)
 	const char *aDescription;
 	if (mLocked)
 	{
-		aDescription = "YOU MUST FIRST UNLOCK THIS LEVEL IN ADVENTURE MODE.";
+		aDescription = LS(STRING_ID_YOU_MUST_FIRST_UNLOCK_THIS_LEVEL_IN_ADVENTURE_MODE);
 	}
 	else if (mCurrentBoard != 0)
 	{
-		aDescription = "HOW LONG CAN YOU SURVIVE AN ENDLESS STREAM OF ZUMAIC INSANITY?";
+		aDescription = LS(STRING_ID_HOW_LONG_CAN_YOU_SURVIVE);
 		if (!this->mIsEndless)
-			aDescription = "PRACTICE A SINGLE BOARD UNTIL MASTERED.  CAN YOU BECOME A SUN GOD?";
+			aDescription = LS(STRING_ID_PRACTICE_A_SINGLE_BOARD_UNTIL_MASTERED);
 	}
 	else
 	{
-		aDescription = "PLAY A RANDOM LEVEL THAT YOU HAVE UNLOCKED IN ADVENTURE MODE.";
+		aDescription = LS(STRING_ID_PLAY_RANDOM_LEVEL_UNLOCKED_IN_ADVENTURE_MODE);
 		if (!this->mIsEndless)
-			aDescription = "PLAY THROUGH ALL THE LEVELS YOU HAVE UNLOCKED IN ADVENTURE MODE IN RANDOM ORDER!";
+			aDescription = LS(STRING_ID_PLAY_THROUGH_ALL_THE_LEVELS_IN_RANDOM_ORDER);
 	}
 
 	Widget::WriteWordWrapped(g, Rect(20, 60, 150, 100), aDescription, 14, -1);

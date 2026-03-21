@@ -230,25 +230,27 @@ void AdventureScreen::Draw(Graphics *g)
 	g->Translate(mTempleXOffsets[0], 0);
 	DrawTemple1(g);
 
-	const char *aTempleNames[4] = {
-		"TEMPLE OF ZUKULKAN",
-		"QUETZAL QUATL",
-		"POPO POYOLLI",
-		"SECRET SHRINE OF ZUMA"};
+    const char *aTempleNames[4] = {
+        LS(STRING_ID_TEMPLE_OF_ZUKULKAN),
+        LS(STRING_ID_QUETZAL_QUATL),
+        LS(STRING_ID_POPO_POYOLLI),
+        LS(STRING_ID_SECRET_SHRINE_OF_ZUMA),
+    };
 
-	const char *aStageNames[12] = {
-		"DO YOU DARE ENTER THE ANCIENT RUINS?",
-		"THE 2ND LEVEL OF THE TEMPLE AWAITS.",
-		"WILL YOU DESCEND TO THE THIRD LEVEL?",
-		"YOU HAVE UNCOVERED A HIDDEN DOOR!",
-		"THE GOLDEN SECRETS OF ZUMA AWAIT YOU.",
-		"DO YOU DARE ENTER THE LAST CHAMBER?",
-		"ANOTHER LOST TEMPLE...",
-		"CAN YOU FULFILL THE PROPHECY?",
-		"THE LAST STAGE (?)",
-		"A RUINED TEMPLE RISES FROM THE EARTH.",
-		"THE FINAL SECRET OF ZUMA BECKONS...",
-		"YOU ENTER THE RUINS ONE LAST TIME..."};
+    const char *aStageNames[12] = {
+        LS(STRING_ID_DO_YOU_DARE_ENTER_THE_ANCIENT_RUINS),
+        LS(STRING_ID_THE_2ND_LEVEL_OF_THE_TEMPLE_AWAITS),
+        LS(STRING_ID_WILL_YOU_DESCEND_TO_THE_THIRD_LEVEL),
+        LS(STRING_ID_YOU_HAVE_UNCOVERED_A_HIDDEN_DOOR),
+        LS(STRING_ID_THE_GOLDEN_SECRETS_OF_ZUMA_AWAIT_YOU),
+        LS(STRING_ID_DO_YOU_DARE_ENTER_THE_LAST_CHAMBER),
+        LS(STRING_ID_ANOTHER_LOST_TEMPLE),
+        LS(STRING_ID_CAN_YOU_FULFILL_THE_PROPHECY_QM),
+        LS(STRING_ID_THE_LAST_STAGE_QM),
+        LS(STRING_ID_RUINED_TEMPLE_RISES),
+        LS(STRING_ID_THE_FINAL_SECRET),
+        LS(STRING_ID_ENTER_THE_RUINS),
+    };
 
 	if (mCurrentDoor >= 0)
 	{
@@ -303,11 +305,11 @@ void AdventureScreen::Draw(Graphics *g)
 	Rect aStageDescRect(20, 60, 150, 100);
 	g->SetFont(Sexy::FONT_MAIN8OUTLINE);
 	g->SetColor(Color(0x28534C));
-	std::string aStageDesc = "Uncover the secret temples of Zuma!";
+    std::string aStageDesc = LS(STRING_ID_UNCOVER_THE_SECRET_TEMPLES);
 
 	if (mHighlightDoor != -1 && mHighlightDoor != mCurrentDoor)
 	{
-		aStageDesc = "Click on a doorway to select a different stage.";
+		aStageDesc = LS(STRING_ID_CLICK_ON_A_DOORWAY);
 	}
 
 	WriteWordWrapped(g, aStageDescRect, aStageDesc, 14, -1);

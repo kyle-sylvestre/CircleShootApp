@@ -20,7 +20,7 @@ using namespace Sexy;
 
 CreateUserDialog::CreateUserDialog(bool rename) : CircleDialog(IMAGE_DIALOG_BACK, IMAGE_DIALOG_BUTTON,
 															   rename ? DialogType_RenameUser : DialogType_CreateUser, true,
-															   "NEW USER", "Please enter your name.", "",
+															   LS(STRING_ID_NEW_USER), LS(STRING_ID_PLEASE_ENTER_YOUR_NAME), "",
 															   Dialog::BUTTONS_OK_CANCEL, 0)
 {
 	mNameInput = new EditWidget(0, this);

@@ -66,35 +66,32 @@ char* itoa(int value, char* buffer, int radix)
 }
 
 StatsDialog::StatsDialog(Board *theBoard, bool doCounter) : CircleDialog(Sexy::IMAGE_DIALOG_BACK, Sexy::IMAGE_DIALOG_BUTTON, DialogType_Stats, true,
-                                                                         "STATS", "", "OK",
+                                                                         LS(STRING_ID_STATS), "", LS(DIALOG_BUTTON_OK),
                                                                          Dialog::BUTTONS_FOOTER, true)
 {
     const char *aNextStageTexts[12];
     const char *aGameOverTexts[8];
 
-    aNextStageTexts[0] = "Fill the orange gauge to complete a level. No new balls will enter the screen.";
-    aNextStageTexts[1] = "Score points to fill the orange gauge.  The more points, the faster the gauge fills.";
-    aNextStageTexts[2] = "Click the right mouse button to swap the current ball with the next ball.";
-    aNextStageTexts[3] = "Shoot balls through a gap to score a gap bonus!  The smaller the gap, the larger the bonus!";
-    aNextStageTexts[4] = "Create combos of 2 or more explosions to score big points and push the curve backwards!";
-    aNextStageTexts[5] = "Close gaps by placing balls of the same color on either side.";
-    aNextStageTexts[6] = "Get a coin for a big point boost to finish the level more quickly!";
-    aNextStageTexts[7] = "Finish a level quickly and you can get bonus points!";
-    aNextStageTexts[8] = "Get an extra frog every 50,000 points!";
-    aNextStageTexts[9] = "Shoot balls through two or more gaps to score a double gap bonus!";
-    aNextStageTexts[10] = "Press space bar to pause the game.";
-    aNextStageTexts[11] = "Press 't' to show the amount of time left to get an Ace time.";
-    aGameOverTexts[0] = "Once you can accept the universe as matter expanding into nothing that is some"
-                        "thing, wearing stripes with plaid comes easy.";
-    aGameOverTexts[1] = "There is only one corner of the universe you can be certain of improving and t"
-                        "hat is your own self.";
-    aGameOverTexts[2] = "It is always wise to look ahead but difficult to look farther than you can see.";
-    aGameOverTexts[3] = "Good timber does not grow with ease. The stronger the wind the stronger the trees.";
-    aGameOverTexts[4] = "The fact that no one understands you doesn't make you an artist.";
-    aGameOverTexts[5] = "Honest criticism is hard to take, particularly from a relative, a friend, an a"
-                        "cquaintance, or a stranger.";
-    aGameOverTexts[6] = "A good plan today is better than a perfect plan tomorrow.";
-    aGameOverTexts[7] = "Good luck is often with the man who doesn't include it in his plans.";
+    aNextStageTexts[0] = LS(STRING_ID_FILL_THE_ORANGE_GAUGE);
+    aNextStageTexts[1] = LS(STRING_ID_SCORE_POINTS_TO_FILL_THE_ORANGE_GAUGE);
+    aNextStageTexts[2] = LS(STRING_ID_CLICK_THE_RIGHT_MOUSE_BUTTON_TO_SWAP);
+    aNextStageTexts[3] = LS(STRING_ID_SHOOT_BALLS_THROUGH_A_GAP_TO_SCORE);
+    aNextStageTexts[4] = LS(STRING_ID_CREATE_COMBOS_OF_2_OR_MORE_EXPLOSIONS);
+    aNextStageTexts[5] = LS(STRING_ID_CLOSE_GAPS_BY_PLACING_BALLS_OF_THE_SAME_COLOR);
+    aNextStageTexts[6] = LS(STRING_ID_GET_A_COIN_FOR_A_BIG_POINT_BOOST_TO_FINISH);
+    aNextStageTexts[7] = LS(STRING_ID_FINISH_A_LEVEL_QUICKLY);
+    aNextStageTexts[8] = LS(STRING_ID_GET_AN_EXTRA_FROG);
+    aNextStageTexts[9] = LS(STRING_ID_SHOOT_BALLS_THROUGH_TWO_OR_MORE_GAPS);
+    aNextStageTexts[10] = LS(STRING_ID_PRESS_SPACE_BAR_TO_PAUSE);
+    aNextStageTexts[11] = LS(STRING_ID_PRESS_T_TO_SHOW_TIME);
+    aGameOverTexts[0] = LS(STRING_ID_ONCE_YOU_CAN_ACCEPT_THE_UNIVERSE);
+    aGameOverTexts[1] = LS(STRING_ID_THERE_IS_ONLY_ONE_CORNER_OF_THE_UNIVERSE);
+    aGameOverTexts[2] = LS(STRING_ID_IT_IS_ALWAYS_WISE_TO_LOOK_AHEAD);
+    aGameOverTexts[3] = LS(STRING_ID_GOOD_TIMBER_DOES_NOT_GROW_WITH_EASE);
+    aGameOverTexts[4] = LS(STRING_ID_THE_FACT_THAT_NO_ONE_UNDERSTANDS);
+    aGameOverTexts[5] = LS(STRING_ID_HONEST_CRITICISM_IS_HARD_TO_TAKE);
+    aGameOverTexts[6] = LS(STRING_ID_A_GOOD_PLAN_TODAY_IS_BETTER);
+    aGameOverTexts[7] = LS(STRING_ID_GOOD_LUCK_IS_OFTEN_WITH_THE_MAN);
 
     mBoard = theBoard;
     mTimeBonus = 0;
@@ -107,12 +104,12 @@ StatsDialog::StatsDialog(Board *theBoard, bool doCounter) : CircleDialog(Sexy::I
         mScore = mBoard->mScore;
         if (mIsWinning)
         {
-            mDialogHeader = "WINNING TOTALS";
+            mDialogHeader = LS(STRING_ID_WINNING_TOTALS);
             mTargetTimeBonus = 50000 * mBoard->mLives;
         }
         else
         {
-            mDialogHeader = "GAME OVER";
+            mDialogHeader = LS(STRING_ID_GAME_OVER);
         }
 
         mCurrentTip = aGameOverTexts[rand() % 8];
@@ -122,7 +119,7 @@ StatsDialog::StatsDialog(Board *theBoard, bool doCounter) : CircleDialog(Sexy::I
         mScore = mBoard->mScore - mBoard->mLevelBeginScore;
         if (mBoard->mPracticeBoard.empty() && mBoard->mNextLevelDesc->mInSpace)
         {
-            mCurrentTip = "Press the 's' key to toggle star scrolling.";
+            mCurrentTip = LS(STRING_ID_PRESS_THE_S_KEY);
         }
         else
         {
@@ -133,7 +130,7 @@ StatsDialog::StatsDialog(Board *theBoard, bool doCounter) : CircleDialog(Sexy::I
         LowTime *aLowTime = mBoard->mApp->mHighScoreMgr->GetLowTime(mBoard->GetUniqueLevelString());
         if (aLowTime != NULL)
         {
-            mBestTimeLeft = "Best Time " + Sexy::GetTimeString(aLowTime->mTime);
+            mBestTimeLeft = LS(STRING_ID_BEST_TIME) + Sexy::GetTimeString(aLowTime->mTime);
             mBestTimeRight = aLowTime->mName;
         }
     }
@@ -241,16 +238,18 @@ void StatsDialog::Draw(Graphics *g)
     int aCol4 = aDialogLeft + 320;
     int aLineY;
 
-    int aLineOffset = 6 + Sexy::FONT_MAIN12->GetLineSpacing();
+    // big fish games localization uses much larger GetLineSpacing but same font
+    //int aLineOffset = 6 + Sexy::FONT_MAIN12->GetLineSpacing();
+    int aLineOffset = 19;
     if (!mIsGameOver)
     {
         g->SetColor(Color(0xFFFF00));
-        g->DrawString("POINTS", aCol1, aDialogTop);
-        g->DrawString("COMBOS", aCol1, aDialogTop + aLineOffset);
-        g->DrawString("COINS", aCol1, aDialogTop + 2 * aLineOffset);
-        g->DrawString("GAPS", aCol1, aDialogTop + 3 * aLineOffset);
-        g->DrawString("MAX CHAIN", aCol1, aDialogTop + 4 * aLineOffset);
-        g->DrawString("MAX COMBO", aCol1, aDialogTop + 5 * aLineOffset);
+        g->DrawString(LS(STRING_ID_POINTS), aCol1, aDialogTop);
+        g->DrawString(LS(STRING_ID_COMBOS), aCol1, aDialogTop + aLineOffset);
+        g->DrawString(LS(STRING_ID_COINS), aCol1, aDialogTop + 2 * aLineOffset);
+        g->DrawString(LS(STRING_ID_GAPS), aCol1, aDialogTop + 3 * aLineOffset);
+        g->DrawString(LS(STRING_ID_MAX_CHAIN), aCol1, aDialogTop + 4 * aLineOffset);
+        g->DrawString(LS(STRING_ID_MAX_COMBO), aCol1, aDialogTop + 5 * aLineOffset);
 
         g->SetColor(Color(0xFFA500));
         g->DrawString(itoa(mScore, buf, 10), aCol2, aDialogTop);
@@ -261,8 +260,8 @@ void StatsDialog::Draw(Graphics *g)
         g->DrawString(itoa(mBoard->mLevelStats.mMaxCombo + 1, buf, 10), aCol2, aDialogTop + 5 * aLineOffset);
 
         g->SetColor(Color(0xFFFF00));
-        g->DrawString("YOUR TIME", aCol3, aDialogTop);
-        g->DrawString("ACE TIME", aCol3, aDialogTop + aLineOffset);
+        g->DrawString(LS(STRING_ID_YOUR_TIME), aCol3, aDialogTop);
+        g->DrawString(LS(STRING_ID_ACE_TIME), aCol3, aDialogTop + aLineOffset);
 
         g->FillRect(aCol3, aDialogTop + aLineOffset + 4, 160, 1);
 
@@ -275,12 +274,13 @@ void StatsDialog::Draw(Graphics *g)
         if (mTargetTimeBonus <= 0)
         {
             g->SetColor(Color(0x9DCBA2));
-            g->DrawString("NO TIME BONUS", aCol3, 4 + aDialogTop + 2 * aLineOffset);
+            g->DrawString(LS(STRING_ID_NO_TIME_BONUS), aCol3, 4 + aDialogTop + 2 * aLineOffset);
         }
         else if (mTimeBonus > 0)
         {
+            // !PORT
             g->SetColor(Color(0x2AFF03));
-            g->DrawString(Sexy::StrFormat("BONUS +%d", mTimeBonus), aCol3, 4 + aDialogTop + 2 * aLineOffset);
+            g->DrawString(Sexy::StrFormat(LS(STRING_ID_BONUS), mTimeBonus), aCol3, 4 + aDialogTop + 2 * aLineOffset);
         }
 
         g->SetColor(Color(0xF8F792));
@@ -297,7 +297,7 @@ void StatsDialog::Draw(Graphics *g)
         if (mIsWinning)
         {
             g->SetColor(Color(0xFFFF00));
-            g->DrawString("EXTRA LIFE BONUS", aCol1, aDialogTop);
+            g->DrawString(LS(STRING_ID_EXTRA_LIFE_BONUS), aCol1, aDialogTop);
             g->SetColor(Color(0x2AFF03));
             if (mTimeBonus > 0)
             {
@@ -308,12 +308,12 @@ void StatsDialog::Draw(Graphics *g)
         }
 
         g->SetColor(Color(0xFFFF00));
-        g->DrawString("TOTAL TIME", aCol1, aDialogTop);
-        g->DrawString("COMBOS", aCol1, aDialogTop + aLineOffset);
-        g->DrawString("COINS", aCol1, aDialogTop + 2 * aLineOffset);
-        g->DrawString("GAPS", aCol3, aDialogTop);
-        g->DrawString("MAX CHAIN", aCol3, aDialogTop + aLineOffset);
-        g->DrawString("MAX COMBO", aCol3, aDialogTop + 2 * aLineOffset);
+        g->DrawString(LS(STRING_ID_TOTAL_TIME), aCol1, aDialogTop);
+        g->DrawString(LS(STRING_ID_COMBOS), aCol1, aDialogTop + aLineOffset);
+        g->DrawString(LS(STRING_ID_COINS), aCol1, aDialogTop + 2 * aLineOffset);
+        g->DrawString(LS(STRING_ID_GAPS), aCol3, aDialogTop);
+        g->DrawString(LS(STRING_ID_MAX_CHAIN), aCol3, aDialogTop + aLineOffset);
+        g->DrawString(LS(STRING_ID_MAX_COMBO), aCol3, aDialogTop + 2 * aLineOffset);
 
         g->SetColor(Color(0xFFA500));
         g->DrawString(Sexy::GetTimeString(mBoard->mGameStats.mTimePlayed / 100), aColLeft, aDialogTop);
@@ -329,7 +329,7 @@ void StatsDialog::Draw(Graphics *g)
     if (!mCurrentTip.empty())
     {
         g->SetColor(Color(0xFFFF00));
-        g->DrawString("TIP", aCol1, aLineY + 4);
+        g->DrawString(LS(STRING_ID_TIP), aCol1, aLineY + 4);
         g->SetColor(Color(0xFFFFFF));
         g->SetFont(Sexy::FONT_DIALOG);
 

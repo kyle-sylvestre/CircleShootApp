@@ -18,8 +18,8 @@ using namespace Sexy;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 OptionsDialog::OptionsDialog(bool inMainMenu) : CircleDialog(Sexy::IMAGE_DIALOG_BACK, Sexy::IMAGE_DIALOG_BUTTON, 0, true,
-                                                             inMainMenu ? "MENU" : "OPTIONS", "",
-                                                             inMainMenu ? "Back To Game" : "Done",
+                                                             inMainMenu ? LS(STRING_ID_MENU) : LS(STRING_ID_OPTIONS), "",
+                                                             inMainMenu ? LS(STRING_ID_BACK_TO_GAME) : LS(STRING_ID_DONE),
                                                              3, false)
 {
     mInMainMenu = inMainMenu;
@@ -34,10 +34,10 @@ OptionsDialog::OptionsDialog(bool inMainMenu) : CircleDialog(Sexy::IMAGE_DIALOG_
     mCustomCursorsCheckbox = MakeCheckbox(3, this);
     m3DAccelCheckbox = MakeCheckbox(4, this);
 
-    mButtonHelp = MakeButton(5, this, "Help", CircleButton::CB_ClickSound, NULL, 3);
-    mButtonUpdates = MakeButton(6, this, "Check For Updates", CircleButton::CB_ClickSound, NULL, 3);
-    mButtonRegister = MakeButton(7, this, "Register", CircleButton::CB_ClickSound, NULL, 3);
-    mButtonBack = MakeButton(8, this, "Back To Main Menu", CircleButton::CB_ClickSound, NULL, 3);
+    mButtonHelp = MakeButton(5, this, LS(STRING_ID_HELP), CircleButton::CB_ClickSound, NULL, 3);
+    mButtonUpdates = MakeButton(6, this, LS(STRING_ID_CHECK_FOR_UPDATES), CircleButton::CB_ClickSound, NULL, 3);
+    mButtonRegister = MakeButton(7, this, LS(STRING_ID_REGISTER), CircleButton::CB_ClickSound, NULL, 3);
+    mButtonBack = MakeButton(8, this, LS(STRING_ID_BACK_TO_MAIN_MENU), CircleButton::CB_ClickSound, NULL, 3);
 
     mFullScreenCheckbox->mChecked = !gSexyAppBase->mIsWindowed;
     mCustomCursorsCheckbox->mChecked = gSexyAppBase->mCustomCursorsEnabled;
@@ -150,12 +150,13 @@ void OptionsDialog::Draw(Graphics *g)
 
     int aPosX = mFullScreenCheckbox->mX - mX + 20;
 
-    g->DrawString("Music Volume", aPosX, mMusicVolumeSlider->mY - mY + FONT_DIALOG->GetAscent() + 5);
-    g->DrawString("Sound Effects", aPosX, mSfxVolumeSlider->mY - mY + FONT_DIALOG->GetAscent() + 5);
+    g->DrawString(LS(STRING_ID_MUSIC_VOLUME), aPosX, mMusicVolumeSlider->mY - mY + FONT_DIALOG->GetAscent() + 5);
+    g->DrawString(LS(STRING_ID_SOUND_EFFECTS), aPosX, mSfxVolumeSlider->mY - mY + FONT_DIALOG->GetAscent() + 5);
 
-    DrawCheckboxText(g, "Fullscreen", mFullScreenCheckbox);
-    DrawCheckboxText(g, "Custom Cursors", mCustomCursorsCheckbox);
-    DrawCheckboxText(g, "    3-D Hardware Acceleration          ", m3DAccelCheckbox);
+    DrawCheckboxText(g, LS(STRING_ID_FULLSCREEN), mFullScreenCheckbox);
+    DrawCheckboxText(g, LS(STRING_ID_CUSTOM_CURSORS), mCustomCursorsCheckbox);
+    DrawCheckboxText(g, Sexy::StrFormat("    %s    ", LS(STRING_ID_3D_HARDWARE_ACCELERATION)), m3DAccelCheckbox);
+    //DrawCheckboxText(g, "    3-D Hardware Acceleration          ", m3DAccelCheckbox);
 }
 
 void OptionsDialog::ButtonPress(int theId)
@@ -203,10 +204,11 @@ void OptionsDialog::CheckboxChecked(int theId, bool checked)
     {
         if (gSexyAppBase->mForceFullscreen && !checked)
         {
-            gSexyAppBase->DoDialog(6, true, "No Windowed Mode",
-                                   "Windowed mode is only available if your desktop is running in either "
-                                   "16 bit or 32 bit color mode, which it is not.",
-                                   "OK", BUTTONS_FOOTER);
+            gSexyAppBase->DoDialog(6, true, 
+                                   LS(STRING_ID_NO_WINDOWED_MODE),
+                                   LS(STRING_ID_WINDOWED_MODE_IS_ONLY_AVAILABLE),
+                                   LS(DIALOG_BUTTON_OK),
+                                   BUTTONS_FOOTER);
             mFullScreenCheckbox->mChecked = true;
         }
     }
@@ -216,19 +218,21 @@ void OptionsDialog::CheckboxChecked(int theId, bool checked)
         {
             if (!gSexyAppBase->Is3DAccelerationRecommended())
             {
-                gSexyAppBase->DoDialog(5, true, "Warning",
-                                       "Your video card may not fully support this feature.\n"
-                                       "If you experience slower performance, please disable Hardware Acceleration.",
-                                       "OK", BUTTONS_FOOTER);
+                gSexyAppBase->DoDialog(5, true, 
+                                       LS(STRING_ID_WARNING),
+                                       LS(STRING_ID_YOUR_VIDEO_CARD_MAY_NOT_FULLY_SUPPORT_THIS_FEATURE),
+                                       LS(DIALOG_BUTTON_OK),
+                                       BUTTONS_FOOTER);
             }
         }
         else
         {
             m3DAccelCheckbox->mChecked = false;
-            gSexyAppBase->DoDialog(5, true, "Not Supported",
-                                   "Hardware Acceleration cannot be enabled on this computer.\n"
-                                   "Your video card does not meet the minimum requirements for this game.",
-                                   "OK", BUTTONS_FOOTER);
+            gSexyAppBase->DoDialog(5, true, 
+                                   LS(STRING_ID_NOT_SUPPORTED),
+                                   LS(STRING_ID_HARDWARE_ACCELERATION_CANNOT_BE_ENABLED),
+                                   LS(DIALOG_BUTTON_OK), 
+                                   BUTTONS_FOOTER);
         }
     }
 }

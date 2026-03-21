@@ -122,7 +122,7 @@ Board::Board(CircleShootApp *theApp)
     mGun = new Gun();
 
     mMenuButton = MakeButton(0, this, "", CircleButton::CB_ClickSound, Sexy::IMAGE_MENU_BUTTON, 3);
-    mContinueButton = MakeButton(1, this, "CONTINUE", CircleButton::CB_ClickSound, NULL, 3);
+    mContinueButton = MakeButton(1, this, LS(STRING_ID_CONTINUE), CircleButton::CB_ClickSound, NULL, 3);
     mContinueButton->SetVisible(false);
 
     mOverlayWidget = new BoardOverlay(this);
@@ -135,7 +135,8 @@ Board::Board(CircleShootApp *theApp)
     mMenuButton->mOverRect = Rect(menuWidth, 0, menuWidth, menuHeight);
     mMenuButton->mDownRect = Rect(menuWidth * 2, 0, menuWidth, menuHeight);
 
-    mMenuButton->Resize(540, 3, menuWidth, menuHeight);
+    // check for big fish games localized width
+    mMenuButton->Resize((menuImage->mWidth == 297) ? 519 : 540, 3, menuWidth, menuHeight);
     mContinueButton->Resize(410, 450 - mContinueButton->mHeight, 200, mContinueButton->mHeight);
 
     mOverlayWidget->Resize(0, 0, CIRCLE_WINDOW_WIDTH, CIRCLE_WINDOW_HEIGHT);
@@ -358,8 +359,8 @@ void Board::DoLevelUp(bool playSounds, bool isCheat)
             mCurTreasure = &*anItr;
         }
 
-        mLevelString = Sexy::StrFormat("%s %d", gSmallGauntletStages[mLevelDesc->mStage], mLevelDesc->mLevel + 1);
-        mVerboseLevelString = Sexy::StrFormat("%s %d", gGauntletStages[mLevelDesc->mStage], mLevelDesc->mLevel + 1);
+        mLevelString = Sexy::StrFormat("%s %d", gSmallGauntletStages(mLevelDesc->mStage), mLevelDesc->mLevel + 1);
+        mVerboseLevelString = Sexy::StrFormat("%s %d", gGauntletStages(mLevelDesc->mStage), mLevelDesc->mLevel + 1);
 
         int aTextWidth = Sexy::FONT_HUGE->StringWidth(mVerboseLevelString);
 
@@ -522,7 +523,7 @@ void Board::AdvanceFreeBullet(BulletList::iterator &theBulletItr)
                 }
             }
 
-            aFloat.AddText(StrFormat("BONUS +%d", bonus), Sexy::FONT_FLOAT_ID, 0xFFFF00);
+            aFloat.AddText(StrFormat(LS(STRING_ID_BONUS), bonus), Sexy::FONT_FLOAT_ID, 0xFFFF00);
             aFloat.AddToMgr(mParticleMgr, mCurTreasure->x, mCurTreasure->y);
             IncScore(bonus);
 
@@ -1134,7 +1135,7 @@ void Board::DrawText(Graphics *g)
         if (mIsEndless)
         {
             g->SetColor(Color(0xFFFF00));
-            aText = "Survival";
+            aText = LS(STRING_ID_SURVIVAL);
             int aTextWidth = Sexy::FONT_DIALOG->StringWidth(aText);
             g->DrawString(aText, 64 - aTextWidth / 2, 20);
 
@@ -1146,7 +1147,7 @@ void Board::DrawText(Graphics *g)
             if (aLives == 0)
             {
                 g->SetColor(Color(0xFFFF00));
-                aText = "Last Life";
+                aText = LS(STRING_ID_LAST_LIFE);
                 int aTextWidth = Sexy::FONT_DIALOG->StringWidth(aText);
                 g->DrawString(aText, 64 - aTextWidth / 2, 20);
                 v19 = false;
@@ -1262,7 +1263,7 @@ void Board::DrawOverlay(Graphics *g)
     {
         g->SetFont(Sexy::FONT_HUGE);
 
-        std::string pauseText = "PAUSED";
+        std::string pauseText = LS(STRING_ID_PAUSED);
         int textY = ((mHeight - Sexy::FONT_HUGE->GetHeight()) / 2) + Sexy::FONT_HUGE->GetAscent() - 20;
         int textWidth = Sexy::FONT_HUGE->StringWidth(pauseText);
 
@@ -1669,7 +1670,7 @@ void Board::ButtonDepress(int theId)
         }
         else
         {
-            mVerboseLevelString = Sexy::StrFormat("LeVeL %d-%d", mNextLevelDesc->mStage + 1, mNextLevelDesc->mLevel + 1);
+            mVerboseLevelString = Sexy::StrFormat(LS(STRING_ID_LEVEL), mNextLevelDesc->mStage + 1, mNextLevelDesc->mLevel + 1);
             SaveGame(GetSaveGameName(false, mApp->mProfile->mId));
             mApp->ShowAdventureScreen(false, true);
         }
@@ -1829,13 +1830,13 @@ void Board::Reset(bool gameOver, bool isLevelReset)
 
     if (!mPracticeBoard.empty())
     {
-        mLevelString = Sexy::StrFormat("%s %d", gSmallGauntletStages[mLevelDesc->mStage], mLevelDesc->mLevel + 1);
-        mVerboseLevelString = Sexy::StrFormat("%s %d", gGauntletStages[mLevelDesc->mStage], mLevelDesc->mLevel + 1);
+        mLevelString = Sexy::StrFormat("%s %d", gSmallGauntletStages(mLevelDesc->mStage), mLevelDesc->mLevel + 1);
+        mVerboseLevelString = Sexy::StrFormat("%s %d", gGauntletStages(mLevelDesc->mStage), mLevelDesc->mLevel + 1);
     }
     else
     {
-        mLevelString = Sexy::StrFormat("LVL %d-%d", mLevelDesc->mStage + 1, mLevelDesc->mLevel + 1);
-        mVerboseLevelString = Sexy::StrFormat("LeVeL %d-%d", mLevelDesc->mStage + 1, mLevelDesc->mLevel + 1);
+        mLevelString = Sexy::StrFormat(LS(STRING_ID_LVL), mLevelDesc->mStage + 1, mLevelDesc->mLevel + 1);
+        mVerboseLevelString = Sexy::StrFormat(LS(STRING_ID_LEVEL), mLevelDesc->mStage + 1, mLevelDesc->mLevel + 1);
     }
 
     mHaveReachedTarget = false;

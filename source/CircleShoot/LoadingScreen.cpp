@@ -8,6 +8,7 @@
 #include <SexyAppFramework/ResourceManager.h>
 #include <SexyAppFramework/HyperlinkWidget.h>
 
+#include "CircleCommon.h"
 #include "CircleShootApp.h"
 #include "Res.h"
 #include "LoadingScreen.h"
@@ -27,7 +28,7 @@ LoadingScreen::LoadingScreen()
     unk8 = false;
 
     mClickToPlayLink = new HyperlinkWidget(0, this);
-    mClickToPlayLink->mLabel = "Click Here To Play!";
+    mClickToPlayLink->mLabel = LS(STRING_ID_CLICK_HERE_TO_PLAY);
     mClickToPlayLink->SetFont(Sexy::FONT_FLOAT);
     mClickToPlayLink->mColor = Color(0xffec91);
     mClickToPlayLink->mOverColor = Color(0xffffff);
@@ -35,7 +36,7 @@ LoadingScreen::LoadingScreen()
     mClickToPlayLink->SetVisible(false);
 
     mRegisterLink = new HyperlinkWidget(1, this);
-    mRegisterLink->mLabel = "Click Here To Register!";
+    mRegisterLink->mLabel = LS(STRING_ID_CLICK_HERE_TO_REGISTER);
     mRegisterLink->SetFont(Sexy::FONT_FLOAT);
     mRegisterLink->mColor = Color(0xffec91);
     mRegisterLink->mOverColor = Color(0xffffff);

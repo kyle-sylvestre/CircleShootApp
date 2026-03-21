@@ -183,7 +183,7 @@ void LevelParser::GetPracticeBoard(int theNum, std::string &theName, std::string
         if (aLevelId == 0)
         {
             theName = "random";
-            theDisplayName = "Random";
+            theDisplayName = LS(STRING_ID_RANDOM);
         }
         else
         {

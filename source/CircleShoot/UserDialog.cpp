@@ -20,13 +20,13 @@ using namespace Sexy;
 ///////////////////////////////////////////////////////////////////////////////
 
 UserDialog::UserDialog() : CircleDialog(Sexy::IMAGE_DIALOG_BACK, Sexy::IMAGE_DIALOG_BUTTON, DialogType_User, true,
-										"Who are you?", "", "",
+										LS(STRING_ID_WHO_ARE_YOU_QM), "", "",
 										Dialog::BUTTONS_OK_CANCEL, false)
 {
 	mUserList = new ListWidget(0, Sexy::FONT_DIALOG, this);
 	mScrollbar = new ScrollbarWidget(0, mUserList);
-	mRenameButton = MakeButton(0, this, "Rename", CircleButton::CB_ClickSound, NULL, 3);
-	mDeleteButton = MakeButton(1, this, "Delete", CircleButton::CB_ClickSound, NULL, 3);
+	mRenameButton = MakeButton(0, this, LS(STRING_ID_RENAME), CircleButton::CB_ClickSound, NULL, 3);
+	mDeleteButton = MakeButton(1, this, LS(STRING_ID_DELETE), CircleButton::CB_ClickSound, NULL, 3);
 
 	static int aUserListColors[5][3] = {
 		{41, 73, 24},
@@ -41,7 +41,7 @@ UserDialog::UserDialog() : CircleDialog(Sexy::IMAGE_DIALOG_BACK, Sexy::IMAGE_DIA
 	mUserList->SetColors(aUserListColors, 5);
 	mUserList->mDrawOutline = true;
 
-	int aNewUserLine = mUserList->AddLine("(Create a New User)", false);
+	int aNewUserLine = mUserList->AddLine(LS(STRING_ID_CREATE_A_NEW_USER), false);
 
 	UserProfile *aProfile = GetCircleShootApp()->mProfile;
 

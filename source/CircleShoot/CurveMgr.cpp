@@ -1176,7 +1176,7 @@ void CurveMgr::DoScoring(Ball *theBall, int theNumBalls, int theComboCount, int 
 
     if (theComboCount > 0)
     {
-        aFloat.AddText(Sexy::StrFormat("COMBO x%d", theComboCount + 1), Sexy::FONT_FLOAT_ID, theColor);
+        aFloat.AddText(Sexy::StrFormat(LS(STRING_ID_COMBO), theComboCount + 1), Sexy::FONT_FLOAT_ID, theColor);
     }
 
     if (theGapBonus > 0)
@@ -1189,17 +1189,17 @@ void CurveMgr::DoScoring(Ball *theBall, int theNumBalls, int theComboCount, int 
 
             if (theNumGaps > 2)
             {
-                scoreString = "TRIPLE GAP BONUS";
+                scoreString = LS(STRING_ID_TRIPLE_GAP_BONUS);
             }
             else
             {
                 mBoard->mSoundMgr->AddSound(Sexy::SOUND_GAP_BONUS, 30, 0, 3.0);
-                scoreString = "DOUBLE GAP BONUS";
+                scoreString = LS(STRING_ID_DOUBLE_GAP_BONUS);
             }
         }
         else
         {
-            scoreString = "GAP BONUS";
+            scoreString = LS(STRING_ID_GAP_BONUS);
         }
 
         aFloat.AddText(scoreString, Sexy::FONT_FLOAT_ID, theColor);
@@ -1208,7 +1208,7 @@ void CurveMgr::DoScoring(Ball *theBall, int theNumBalls, int theComboCount, int 
 
     if (inARow)
     {
-        aFloat.AddText(Sexy::StrFormat("CHAIN BONUS x%d", mBoard->mNumClearsInARow), Sexy::FONT_FLOAT_ID, theColor);
+        aFloat.AddText(Sexy::StrFormat(LS(STRING_ID_CHAIN_BONUS), mBoard->mNumClearsInARow), Sexy::FONT_FLOAT_ID, theColor);
         mBoard->mSoundMgr->AddSound(Sexy::SOUND_CHAIN_BONUS, 0, 0, mBoard->mNumClearsInARow - 5);
     }
 
@@ -1217,17 +1217,17 @@ void CurveMgr::DoScoring(Ball *theBall, int theNumBalls, int theComboCount, int 
 
     if (gGotPowerUp[PowerType_SlowDown])
     {
-        aFloat.AddText("SLOWDOWN Ball", Sexy::FONT_FLOAT_ID, theColor);
+        aFloat.AddText(LS(STRING_ID_SLOWDOWN_BALL), Sexy::FONT_FLOAT_ID, theColor);
     }
 
     if (gGotPowerUp[PowerType_MoveBackwards])
     {
-        aFloat.AddText("BACKWARDS Ball", Sexy::FONT_FLOAT_ID, theColor);
+        aFloat.AddText(LS(STRING_ID_BACKWARDS_BALL), Sexy::FONT_FLOAT_ID, theColor);
     }
 
     if (gGotPowerUp[PowerType_Accuracy])
     {
-        aFloat.AddText("ACCURACY Ball", Sexy::FONT_FLOAT_ID, theColor);
+        aFloat.AddText(LS(STRING_ID_ACCURACY_BALL), Sexy::FONT_FLOAT_ID, theColor);
     }
 
     aFloat.AddToMgr(mBoard->mParticleMgr, aClrX, aClrY);

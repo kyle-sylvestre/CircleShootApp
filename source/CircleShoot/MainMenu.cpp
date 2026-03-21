@@ -62,7 +62,7 @@ MainMenu::MainMenu()
 
     mEyesImage = Sexy::CutoutImageFromAlpha((MemoryImage *)Sexy::IMAGE_MM_BACK, (MemoryImage *)Sexy::IMAGE_MM_EYEMASK, mEyeCutoutPos.mX, mEyeCutoutPos.mY);
     mNotYouLink = new HyperlinkWidget(5, this);
-    mNotYouLink->mLabel = "(If this is not you, click here.)";
+    mNotYouLink->mLabel = LS(STRING_ID_IF_THIS_IS_NOT_YOU);
     mNotYouLink->SetFont(Sexy::FONT_MAIN10);
     mNotYouLink->mUnderlineSize = 0;
     mNotYouLink->mColor = Color(0x5B3700);
@@ -181,8 +181,20 @@ void MainMenu::AddedToManager(WidgetManager *theWidgetManager)
     mArcadeButton->Layout(48, this, 452, 64, 0, 0);
     mGauntletButton->Layout(48, this, 436, 153, 0, 0);
     mOptionsButton->Layout(48, this, 418, 236, 0, 0);
-    mMoreGamesButton->Layout(48, this, 394, 305, 0, 0);
-    mQuitButton->Layout(48, this, 496, 315, 0, 0);
+
+    // check for big fish games localized buttons
+    if (mMoreGamesButton->Width() == 118)
+    {
+        // small buttons on same rows
+        mMoreGamesButton->Layout(48, this, 394, 305, 0, 0);
+        mQuitButton->Layout(48, this, 496, 315, 0, 0);
+    }
+    else
+    {
+        // big buttons on different rows
+        mMoreGamesButton->Layout(48, this, 405, 305, 0, 0);
+        mQuitButton->Layout(48, this, 394, 371, 0, 0);
+    }
 
     theWidgetManager->AddWidget(mArcadeButton);
     theWidgetManager->AddWidget(mGauntletButton);
@@ -534,12 +546,11 @@ void MainMenu::Draw(Graphics *g)
     std::string welcome;
     if (app->mProfile)
     {
-        welcome = "Welcome to Zuma,";
-        welcome += SexyString(" ") + app->mProfile->mName + '!';
+        welcome = Sexy::StrFormat(LS(STRING_ID_WELCOME_TO_ZUMA), app->mProfile->mName.c_str());
     }
     else
     {
-        welcome = "Welcome to Zuma!";
+        welcome = LS(STRING_ID_WELCOME_TO_ZUMA1);
     }
 
     int textWidth = Sexy::FONT_BROWNTITLE->StringWidth(welcome);
