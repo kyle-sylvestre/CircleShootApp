@@ -3,12 +3,81 @@
 #include "CircleShootApp.h"
 #include <SDL2/SDL.h>
 
+#if defined(__APPLE__)
+#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
+
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <iostream>
+void PlatformInit()
+{
+    NSString *pathWithTilde = @"~/Library/Application Support/ZumaPortable";
+    NSString *fullPath = [pathWithTilde stringByExpandingTildeInPath];
+    const char *path = [fullPath UTF8String];
+    Sexy::MkDir(path);
+    
+    for (;;)
+    {
+        // read zuma file location
+        std::string rpath;
+        std::string filename = Sexy::StrFormat("%s/gamefolder.txt", path);
+        std::ifstream file(filename, std::ios::binary); // open in binary mode
+        if (file)
+        {
+            std::ostringstream contents;
+            contents << file.rdbuf(); // read entire file into stream
+            rpath = contents.str();
+            
+            // remove line endings
+            while (rpath.size() && (rpath.back() == '\n' || rpath.back() == '\r'))
+                rpath.pop_back();
+        }
+
+        if (Sexy::FileExists((rpath + "/properties/resources.xml").c_str()))
+        {
+            Sexy::SetResourceFolder(rpath);
+            Sexy::ChDir(rpath);
+            break;
+        }
+        else
+        {
+            // THIS WILL NOT WORK AS CONSOLE APP, NEEDS TO BE APP BUNDLE
+            NSOpenPanel* openDlg = [NSOpenPanel openPanel];
+            [openDlg setMessage:@"Select Zuma Folder"];
+            [openDlg setCanChooseDirectories:YES];
+            [openDlg setCanChooseFiles:NO];
+            [openDlg setAllowsMultipleSelection:NO];
+            [openDlg setDirectoryURL:[NSURL URLWithString:[NSString stringWithUTF8String:"."] ] ];
+            auto result = [openDlg runModal];
+            if (result == NSModalResponseOK)
+            {
+                const char *path = [[[[openDlg URLs] objectAtIndex:0] path] UTF8String];
+                std::ofstream outFile(filename, std::ios::binary);
+                if (outFile)
+                {
+                    outFile.write(path, strlen(path));
+                    outFile.close();
+                }
+            }
+            else
+            {
+                exit(0);
+            }
+        }
+    }
+}
+#else
+void PlatformInit() 
+{
+}
+#endif
+
 int main(int argc, char *argv[])
 {
-	const char *path = "/Users/ksylvestre/dev/CircleShootApp/ignore";
     Sexy::CircleShootApp app;
-	Sexy::SetResourceFolder(path);
-	Sexy::ChDir(path);
+    PlatformInit();
 
     app.Init();
     app.Start();
