@@ -5,6 +5,18 @@
 #include <SDL2/SDL.h>
 #include "DataSync.h"
 
+#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#define LONG_LITTLEE_TO_NATIVE(x) __builtin_bswap32(x)
+#define WORD_LITTLEE_TO_NATIVE(x) __builtin_bswap16(x)
+#define LONG_NATIVE_TO_LITTLEE(x) __builtin_bswap32(x)
+#define WORD_NATIVE_TO_LITTLEE(x) __builtin_bswap16(x)
+#else
+#define LONG_LITTLEE_TO_NATIVE(x) (x)
+#define WORD_LITTLEE_TO_NATIVE(x) (x)
+#define LONG_NATIVE_TO_LITTLEE(x) (x)
+#define WORD_NATIVE_TO_LITTLEE(x) (x)
+#endif
+
 using namespace Sexy;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,16 +90,14 @@ uint32_t DataReader::ReadLong()
 {
     uint32_t result;
     ReadBytes(&result, sizeof(result));
-    return result;
-    //return LONG_LITTLEE_TO_NATIVE(result);
+    return LONG_LITTLEE_TO_NATIVE(result);
 }
 
 ushort DataReader::ReadShort()
 {
     ushort result = 0;
     ReadBytes(&result, sizeof(result));
-    return result;
-    //return WORD_LITTLEE_TO_NATIVE(result);
+    return WORD_LITTLEE_TO_NATIVE(result);
 }
 
 uchar DataReader::ReadByte()
@@ -106,7 +116,7 @@ float DataReader::ReadFloat()
 {
     uint32_t result;
     ReadBytes(&result, sizeof(result));
-    //LONG_LITTLEE_TO_NATIVE(result);
+    result = LONG_LITTLEE_TO_NATIVE(result);
     return reinterpret_cast<float &>(result);
 }
 
@@ -190,13 +200,13 @@ void DataWriter::WriteBytes(const void *theBuffer, uint32_t theLength)
 
 void DataWriter::WriteLong(uint32_t theValue)
 {
-    //theValue = LONG_NATIVE_TO_LITTLEE(theValue);
+    theValue = LONG_NATIVE_TO_LITTLEE(theValue);
     WriteBytes(&theValue, sizeof(theValue));
 }
 
 void DataWriter::WriteShort(ushort theValue)
 {
-    //theValue = WORD_NATIVE_TO_LITTLEE(theValue);
+    theValue = WORD_NATIVE_TO_LITTLEE(theValue);
     WriteBytes(&theValue, sizeof(theValue));
 }
 
@@ -213,7 +223,7 @@ void DataWriter::WriteBool(bool theValue)
 void DataWriter::WriteFloat(float theValue)
 {
     uint32_t result = reinterpret_cast<uint32_t &>(theValue);
-    //result = LONG_NATIVE_TO_LITTLEE(result);
+    result = LONG_NATIVE_TO_LITTLEE(result);
     WriteBytes(&result, sizeof(result));
 }
 
