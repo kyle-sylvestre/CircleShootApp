@@ -13,6 +13,7 @@
 #include <iostream>
 void PlatformInit()
 {
+    SDL_SetHint(SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK, "1");
     NSString *pathWithTilde = @"~/Library/Application Support/ZumaPortable";
     NSString *fullPath = [pathWithTilde stringByExpandingTildeInPath];
     const char *path = [fullPath UTF8String];
