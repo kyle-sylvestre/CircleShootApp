@@ -519,10 +519,6 @@ const char *LS(int string_id)
                 {
                     value = Sexy::StrFormat("%s x%%d", value.c_str());
                 }
-                else if (string_id == STRING_ID_WELCOME_TO_ZUMA)
-                {
-                    value = Sexy::StrFormat("%s，%%s!", value.c_str());
-                }
                 else if (string_id == STRING_ID_BONUS)
                 {
                     value = Sexy::StrFormat("%s +%%d", value.c_str());
