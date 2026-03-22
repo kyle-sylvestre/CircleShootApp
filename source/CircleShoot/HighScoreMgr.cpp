@@ -49,7 +49,7 @@ void HighScoreMgr::Load()
     Clear();
     Buffer aBuffer;
 
-    if (!gSexyAppBase->ReadBufferFromFile("userdata/highscores.dat", &aBuffer))
+    if (!gSexyAppBase->ReadBufferFromFile(Sexy::GetAppDataPath("userdata/highscores.dat"), &aBuffer))
     {
         AddDefaults();
         return;
@@ -70,8 +70,8 @@ void HighScoreMgr::Save()
     DataSync aSync(aWriter);
     SyncState(aSync);
 
-    Sexy::MkDir("userdata");
-    gSexyAppBase->WriteBytesToFile("userdata/highscores.dat", aWriter.mMemoryHandle, aWriter.mMemoryPosition);
+    Sexy::MkDir(Sexy::GetAppDataPath("userdata"));
+    gSexyAppBase->WriteBytesToFile(Sexy::GetAppDataPath("userdata/highscores.dat"), aWriter.mMemoryHandle, aWriter.mMemoryPosition);
 }
 
 void HighScoreMgr::Clear()

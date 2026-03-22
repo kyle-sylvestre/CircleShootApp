@@ -552,5 +552,5 @@ std::string Sexy::GetSaveGameName(bool practice, int userId)
     {
         aName = "adv";
     }
-    return Sexy::StrFormat("userdata/%s%d.sav", aName, userId);
+    return Sexy::GetAppDataPath(Sexy::StrFormat("userdata/%s%d.sav", aName, userId));
 }
