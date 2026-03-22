@@ -51,14 +51,30 @@ void PlatformInit()
             [openDlg setCanChooseFiles:NO];
             [openDlg setAllowsMultipleSelection:NO];
             [openDlg setDirectoryURL:[NSURL URLWithString:[NSString stringWithUTF8String:"."] ] ];
+            [openDlg setTreatsFilePackagesAsDirectories:YES];
             auto result = [openDlg runModal];
             if (result == NSModalResponseOK)
             {
-                const char *path = [[[[openDlg URLs] objectAtIndex:0] path] UTF8String];
+                std::string path = [[[[openDlg URLs] objectAtIndex:0] path] UTF8String];
+                
+                // fixup path for macOS demo version
+                std::string mac_demo_path = Sexy::StrFormat("%s/Contents/Resources/Zuma Deluxe.app/Contents/Resources", path.c_str());
+                if (Sexy::FileExists(mac_demo_path))
+                {
+                    path = mac_demo_path;
+                }
+                
+                // fixup path for macOS full version
+                std::string mac_full_path = Sexy::StrFormat("%s/Contents/Resources", path.c_str());
+                if (Sexy::FileExists(mac_full_path))
+                {
+                    path = mac_full_path;
+                }
+                
                 std::ofstream outFile(filename, std::ios::binary);
                 if (outFile)
                 {
-                    outFile.write(path, strlen(path));
+                    outFile.write(path.c_str(), path.size());
                     outFile.close();
                 }
             }
