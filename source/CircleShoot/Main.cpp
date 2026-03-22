@@ -46,7 +46,7 @@ void PlatformInit()
         {
             // THIS WILL NOT WORK AS CONSOLE APP, NEEDS TO BE APP BUNDLE
             NSOpenPanel* openDlg = [NSOpenPanel openPanel];
-            [openDlg setMessage:@"Select Zuma Folder"];
+            [openDlg setMessage:@"Select Zuma Deluxe Folder"];
             [openDlg setCanChooseDirectories:YES];
             [openDlg setCanChooseFiles:NO];
             [openDlg setAllowsMultipleSelection:NO];
