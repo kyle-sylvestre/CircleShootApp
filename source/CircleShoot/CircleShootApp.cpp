@@ -169,8 +169,16 @@ void CircleShootApp::Init()
     SetCursorImage(2, Sexy::IMAGE_CURSOR_DRAGGING);
     SetCursorImage(3, Sexy::IMAGE_CURSOR_TEXT);
 
-    mMusicInterface->LoadMusic(0, "music/zuma.mo3");
-    mMusicInterface->LoadMusic(1, "music/zuma.mo3");
+    if (Sexy::FileExists("music/zuma.it"))
+    {
+        mMusicInterface->LoadMusic(0, "music/zuma.it");
+        mMusicInterface->LoadMusic(1, "music/zuma.it");
+    }
+    else
+    {
+        mMusicInterface->LoadMusic(0, "music/zuma.mo3");
+        mMusicInterface->LoadMusic(1, "music/zuma.mo3");
+    }
     PlaySong(24, false, 0.01);
     ShowLoadingScreen();
 }
