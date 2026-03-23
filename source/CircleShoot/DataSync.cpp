@@ -5,17 +5,10 @@
 #include <SDL2/SDL.h>
 #include "DataSync.h"
 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-#define LONG_LITTLEE_TO_NATIVE(x) __builtin_bswap32(x)
-#define WORD_LITTLEE_TO_NATIVE(x) __builtin_bswap16(x)
-#define LONG_NATIVE_TO_LITTLEE(x) __builtin_bswap32(x)
-#define WORD_NATIVE_TO_LITTLEE(x) __builtin_bswap16(x)
-#else
-#define LONG_LITTLEE_TO_NATIVE(x) (x)
-#define WORD_LITTLEE_TO_NATIVE(x) (x)
-#define LONG_NATIVE_TO_LITTLEE(x) (x)
-#define WORD_NATIVE_TO_LITTLEE(x) (x)
-#endif
+#define LONG_LITTLEE_TO_NATIVE(x) Sexy::FromLE32(x)
+#define WORD_LITTLEE_TO_NATIVE(x) Sexy::FromLE16(x)
+#define LONG_NATIVE_TO_LITTLEE(x) Sexy::ToLE32(x)
+#define WORD_NATIVE_TO_LITTLEE(x) Sexy::ToLE16(x)
 
 using namespace Sexy;
 
