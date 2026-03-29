@@ -552,7 +552,10 @@ const char *LS(int string_id)
             {
                 if (value.size() == 0)
                 {
-                    value = Sexy::StrFormat("%s!", LS(STRING_ID_WELCOME_TO_ZUMA));
+                    // don't recall function, that returns format string
+                    const char *str_string_id = GetLocalizationIdString(STRING_ID_WELCOME_TO_ZUMA);
+                    value = Sexy::gSexyAppBase->GetString(str_string_id, "");
+                    value = Sexy::StrFormat("%s!", value.c_str());
                 }
             }
             
