@@ -460,6 +460,55 @@ void SetupLocalizations()
     Set(STRING_ID_MORE_GAMES_URL, "");
     Set(STRING_ID_LVL, "LVL");
 }
+static std::string GetFormatter(int string_id, std::string value)
+{
+    std::string result;
+    if (string_id == STRING_ID_LEVEL)
+    {
+        result = Sexy::StrFormat("%s %%d-%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_LVL)
+    {
+        result = Sexy::StrFormat("%s %%d-%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_LVL)
+    {
+        result = Sexy::StrFormat("%s %%d-%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_SCORE)
+    {
+        result = Sexy::StrFormat("%%s (%%s)\n%s： %%d\n", value.c_str());
+    }
+    else if (string_id == STRING_ID_COMBO)
+    {
+        result = Sexy::StrFormat("%s x%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_CHAIN_BONUS)
+    {
+        result = Sexy::StrFormat("%s x%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_BONUS)
+    {
+        result = Sexy::StrFormat("%s +%%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_STAGE)
+    {
+        result = Sexy::StrFormat("%s %%d", value.c_str());
+    }
+    else if (string_id == STRING_ID_LIVES_LEFT)
+    {
+        result = Sexy::StrFormat("%%d %s", value.c_str());
+    }
+    else if (string_id == STRING_ID_WELCOME_TO_ZUMA)
+    {
+        result = Sexy::StrFormat("%s, %%s!", value.c_str());
+    }
+    else if (string_id == STRING_ID_THIS_WILL_PERMANENTLY_REMOVE_PLAYER_ROSTER)
+    {
+        result = "This will permanently remove '%s' from the player roster!";
+    }
+    return result;
+}
 const char *LS(int string_id)
 {
     const char *result = "???";
@@ -495,45 +544,46 @@ const char *LS(int string_id)
             // TW more strings use formatters
             if (value.find('%') == std::string::npos)
             {
-                if (string_id == STRING_ID_LEVEL)
+                std::string formatter = GetFormatter(string_id, value);
+                if (formatter.size())
                 {
-                    value = Sexy::StrFormat("%s %%d-%%d", value.c_str());
+                    value = formatter;
                 }
-                else if (string_id == STRING_ID_LVL)
+            }
+            else
+            {
+                // make sure formatter strings match
+                std::string formatter = GetFormatter(string_id, "ERROR_STRING_FORMAT");
+                const char *a = value.c_str();
+                const char *b = formatter.c_str();
+                bool is_invalid = false;
+                for (;;)
                 {
-                    value = Sexy::StrFormat("%s %%d-%%d", value.c_str());
+                    const char *ap = strchr(a, '%');
+                    const char *bp = strchr(b, '%');
+                    if ((ap != NULL) != (bp != NULL))
+                    {
+                        is_invalid = true;
+                        break;
+                    }
+
+                    if (ap == NULL || bp == NULL)
+                        break;
+
+                    if (ap[1] != bp[1])
+                    {
+                        is_invalid = true;
+                        break;
+                    }
+
+                    a = ap + 1;
+                    b = bp + 1;
                 }
-                else if (string_id == STRING_ID_LVL)
+
+                // fallback to default on bad string formatter
+                if (is_invalid)
                 {
-                    value = Sexy::StrFormat("%s %%d-%%d", value.c_str());
-                }
-                else if (string_id == STRING_ID_SCORE)
-                {
-                    value = Sexy::StrFormat("%%s (%%s)\n%s： %%d\n", value.c_str());
-                }
-                else if (string_id == STRING_ID_COMBO)
-                {
-                    value = Sexy::StrFormat("%s x%%d", value.c_str());
-                }
-                else if (string_id == STRING_ID_CHAIN_BONUS)
-                {
-                    value = Sexy::StrFormat("%s x%%d", value.c_str());
-                }
-                else if (string_id == STRING_ID_BONUS)
-                {
-                    value = Sexy::StrFormat("%s +%%d", value.c_str());
-                }
-                else if (string_id == STRING_ID_STAGE)
-                {
-                    value = Sexy::StrFormat("%s %%d", value.c_str());
-                }
-                else if (string_id == STRING_ID_LIVES_LEFT)
-                {
-                    value = Sexy::StrFormat("%%d %s", value.c_str());
-                }
-                else if (string_id == STRING_ID_WELCOME_TO_ZUMA)
-                {
-                    value = Sexy::StrFormat("%s, %%s!", value.c_str());
+                    value = formatter;
                 }
             }
 
