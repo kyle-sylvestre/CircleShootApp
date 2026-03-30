@@ -92,6 +92,7 @@ CircleShootApp::~CircleShootApp()
 void CircleShootApp::Init()
 {
     SexyAppBase::Init();
+    mMuteOnLostFocus = true;
 
     SetupLocalizations();
     LoadProperties();
