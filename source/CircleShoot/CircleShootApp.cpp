@@ -488,6 +488,25 @@ void CircleShootApp::LoadingThreadProc()
     resourceGroups[3] = "AdventureScreen";
     resourceGroups[4] = "GauntletScreen";
 
+    // check for funky zylom MenuMain resource group
+    {
+        std::string file = Sexy::StrFormat("%s/properties/resources.xml", Sexy::GetResourceFolder().c_str());
+        FILE *f = fopen(file.c_str(), "rb");
+        if (f)
+        {
+            const char *group_name = "MenuMain";
+            char buf[32 * 1024] = {};
+            fread(buf, 1, sizeof(buf), f);
+            buf[SDL_arraysize(buf) - 1] = '\0';
+            const char *p = strstr(buf, group_name);
+            if (p)
+            {
+                resourceGroups[2] = group_name;
+            }
+            fclose(f);
+        }
+    }
+    
     mUnk28 = 0;
     mNumLoadingThreadTasks = 0;
     int i;

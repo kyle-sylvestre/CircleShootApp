@@ -226,7 +226,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theMgr, const char *name)
         return Sexy::ExtractInitResources(theMgr);
     if (!strcmp(name, "LoadingThread"))
         return Sexy::ExtractLoadingThreadResources(theMgr);
-    if (!strcmp(name, "MainMenu"))
+    if (!strcmp(name, "MainMenu") || !strcmp(name, "MenuMain"))
         return Sexy::ExtractMainMenuResources(theMgr);
     if (!strcmp(name, "MoreGames"))
         return Sexy::ExtractMoreGamesResources(theMgr);
