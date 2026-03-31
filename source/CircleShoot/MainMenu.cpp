@@ -182,8 +182,13 @@ void MainMenu::AddedToManager(WidgetManager *theWidgetManager)
     mGauntletButton->Layout(48, this, 436, 153, 0, 0);
     mOptionsButton->Layout(48, this, 418, 236, 0, 0);
 
-    // check for big fish games localized buttons
-    if (mMoreGamesButton->Width() == 118)
+    if (mQuitButton->Width() == 223 && mQuitButton->Height() == 154)
+    {
+        // zylom big quit button hiding more games button
+        mMoreGamesButton->Layout(48, this, 394, 305, 0, 0);
+        mQuitButton->Layout(48, this, 394, 305, 0, 0);
+    }
+    else if (mMoreGamesButton->Width() == 118)
     {
         // small buttons on same rows
         mMoreGamesButton->Layout(48, this, 394, 305, 0, 0);
