@@ -608,6 +608,16 @@ const char *LS(int string_id)
                     value = Sexy::StrFormat("%s!", value.c_str());
                 }
             }
+
+            // TW different string id
+            if (string_id == STRING_ID_BIZ_DEV)
+            {
+                if (value.size() == 0)
+                {
+                    const char *str_string_id = "STRING_ID_BIZDEV";
+                    value = Sexy::gSexyAppBase->GetString(str_string_id, "");
+                }
+            }
             
             STRINGS[string_id] = strdup(value.c_str());
         }
