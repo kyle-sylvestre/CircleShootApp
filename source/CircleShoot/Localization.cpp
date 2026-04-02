@@ -516,28 +516,32 @@ const char *LS(int string_id)
     {
         if (STRINGS[string_id] == NULL)
         {
-            // TW uses different string id
-            std::string value;
-            if (string_id == STRING_ID_DO_YOU_WANT_TO_CONTINUE_YOUR_LAST_GAME_QM)
-            {
-                const char *str_string_id = "STRING_ID_DO_YOU_WANT_TO_CONTINUE_?";
-                value = Sexy::gSexyAppBase->GetString(str_string_id, "");
-            }
-
-            if (value.size() == 0)
-            {
-                const char *str_string_id = GetLocalizationIdString(string_id);
-                value = Sexy::gSexyAppBase->GetString(str_string_id, "");
-            }
+            const char *str_string_id = GetLocalizationIdString(string_id);
+            std::string value = Sexy::gSexyAppBase->GetString(str_string_id, "");
 
             // use StrFormat newlines, too many in this string
             if (string_id == STRING_ID_YOUR_GAME_WAS_SAVED_WHEN_YOU_QUIT || 
                 string_id == STRING_ID_DO_YOU_WANT_TO_CONTINUE_YOUR_LAST_GAME_QM)
             {
-                size_t i = value.find('\n');
-                if (i < value.size())
+                // remove line endings in latin1 versions
+                size_t i = value.find("\n\n\n\n");
+                if (i != std::string::npos)
                 {
                     value.erase(i);
+                }
+            }
+            
+            if (string_id == STRING_ID_YOUR_GAME_WAS_SAVED_WHEN_YOU_QUIT)
+            {
+                // TW two strings combined into one, separate them
+                size_t i0 = value.find("\n\n");
+                size_t i1 = value.rfind("\n\n");
+                if (i0 != std::string::npos && i1 != std::string::npos && i0 < i1)
+                {
+                    std::string quit = value.substr(0, i0);
+                    std::string cont = value.substr(i0 + 2, i1 - (i0 + 2));
+                    value = quit;
+                    STRINGS[STRING_ID_DO_YOU_WANT_TO_CONTINUE_YOUR_LAST_GAME_QM] = strdup(cont.c_str()); // not in TW
                 }
             }
 
