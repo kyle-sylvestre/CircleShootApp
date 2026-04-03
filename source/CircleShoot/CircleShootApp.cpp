@@ -966,7 +966,7 @@ void CircleShootApp::DoGetReadyDialog()
 {
     if (mDialogMap.empty())
     {
-        DoDialog(DialogType_GetReady, true, LS(STRING_ID_GO), "", LS(STRING_ID_GET_READY), Dialog::BUTTONS_FOOTER);
+        DoDialog(DialogType_GetReady, true, LS(STRING_ID_GET_READY), "", LS(STRING_ID_GO), Dialog::BUTTONS_FOOTER);
         if (mBoard)
         {
             mBoard->Pause(true, true);
@@ -1017,7 +1017,7 @@ void CircleShootApp::FinishConfirmContinueDialog(bool startGame)
 
     if (startGame)
     {
-        StartSavedGame(true);
+        StartSavedGame(false);
     }
     else if (mIsPractice)
     {
