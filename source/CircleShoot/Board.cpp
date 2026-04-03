@@ -1414,6 +1414,7 @@ void Board::MouseDrag(int x, int y)
 {
     Widget::MouseDrag(x, y);
     Widget::MouseMove(x, y);
+    MouseMove(x, y);
 }
 
 void Board::MouseDown(int x, int y, int theClickCount)
