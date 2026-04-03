@@ -817,16 +817,13 @@ void CircleShootApp::FinishRenameUserDialog(bool confirm)
 
     if (!aNewName.empty())
     {
-        int cmp = strcasecmp(aSelName.c_str(), aNewName.c_str());
         if (mProfileMgr->RenameProfile(aSelName, aNewName))
         {
             mProfileMgr->Save();
-
-            if (!cmp)
+            if (strcasecmp(aSelName.c_str(), aNewName.c_str()) != 0)
             {
                 mProfile = mProfileMgr->GetProfile(aNewName);
             }
-
             aUserDialog->FinishRenameUser(aNewName);
             mWidgetManager->MarkAllDirty();
             KillDialog(DialogType_RenameUser);
