@@ -5,7 +5,7 @@
 #include <SexyAppFramework/Point.h>
 #include <SDL2/SDL.h>
 #include <thread>
-typedef unsigned int DWORD;
+#include <algorithm>
 
 // For convenience of making mods that want a different window size.
 #define CIRCLE_WINDOW_WIDTH 640

@@ -85,6 +85,110 @@ void PlatformInit()
         }
     }
 }
+#elif defined(_WIN32)
+#include <windows.h>
+#include <shlobj.h>   // for SHGetFolderPathA, SHBrowseForFolder, etc.
+#include <string>
+#include <fstream>
+#include <sstream>
+
+bool PickFolderLegacy(std::string& outPath, const std::string& initialFolder = ".")
+{
+    bool result = false;
+    BROWSEINFOA bi = {0};
+    char path[MAX_PATH] = {0};
+
+    bi.hwndOwner = nullptr;
+    bi.pidlRoot = nullptr; // Start from "My Computer"
+    bi.pszDisplayName = path;
+    bi.lpszTitle = "Select Zuma Deluxe Folder";
+    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI | BIF_EDITBOX;
+
+    // Optionally set initial folder using a PIDL
+    LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+    if (pidl != nullptr)
+    {
+        if (SHGetPathFromIDListA(pidl, path))
+        {
+            outPath = path;
+            result = true;
+        }
+        CoTaskMemFree(pidl);
+    }
+    return result;
+}
+
+void PlatformInit()
+{
+    // check if running on wine
+    {
+        HMODULE hntdll = GetModuleHandle("ntdll.dll");
+        if(hntdll)
+        {
+            FARPROC wine_get_version = GetProcAddress(hntdll, "wine_get_version");
+            if (wine_get_version)
+            {
+                // wasapi causes static/crackle sounds, force directsound
+                SDL_SetHint(SDL_HINT_AUDIODRIVER, "directsound");
+            }
+        }
+    }
+
+    // 1. Create settings folder in AppData\Roaming\ZumaPortable
+    char appDataPath[MAX_PATH] = {};
+    if (SUCCEEDED(SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appDataPath)))
+    {
+        std::string path = std::string(appDataPath) + "\\ZumaPortable";
+        Sexy::MkDir(path.c_str());
+
+        std::string gameFolderFile = path + "\\gamefolder.txt";
+        std::string rpath;
+
+        for (;;)
+        {
+            // 2. Try reading saved path
+            std::ifstream file(gameFolderFile, std::ios::binary);
+            if (file)
+            {
+                std::ostringstream contents;
+                contents << file.rdbuf();
+                rpath = contents.str();
+                while (!rpath.empty() && (rpath.back() == '\r' || rpath.back() == '\n'))
+                    rpath.pop_back();
+            }
+
+            // 3. Check if the game folder is valid
+            if (Sexy::FileExists((rpath + "\\properties\\resources.xml").c_str()))
+            {
+                Sexy::SetResourceFolder(rpath);
+                Sexy::ChDir(rpath);
+                break;
+            }
+            else
+            {
+                // 4. Show legacy folder selection dialog
+                if (!PickFolderLegacy(rpath))
+                {
+                    exit(0); // user canceled
+                }
+
+                // Save path to file
+                std::ofstream outFile(gameFolderFile, std::ios::binary);
+                if (outFile)
+                {
+                    outFile.write(rpath.c_str(), rpath.size());
+                    outFile.close();
+                }
+            }
+        }
+    }
+    else
+    {
+        MessageBoxA(nullptr, "Failed to get AppData folder.", "Error", MB_OK | MB_ICONERROR);
+        exit(0);
+    }
+}
+
 #else
 void PlatformInit() 
 {
