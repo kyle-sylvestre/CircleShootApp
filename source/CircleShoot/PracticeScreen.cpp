@@ -486,12 +486,23 @@ MemoryImage *PracticeScreen::GetThumbnail(std::string const &theName)
 	// there's also a base folder argument passed into arg 2 of GetImage in some versions
 	// the SexyApp version we're using doesn't support that and we don't support custom save folders yet.
 	MemoryImage *anImage = gSexyAppBase->GetImage("levels/cached_thumbnails/" + theName);
-	if (anImage != NULL)
+	if (anImage == NULL)
 	{
-		return anImage;
+        anImage = gSexyAppBase->GetImage("levels/perm_thumbnails/" + theName);
 	}
 
-	anImage = gSexyAppBase->GetImage("levels/perm_thumbnails/" + theName);
+    // TODO: MemoryImage works with image gradients, GLImage doesn't
+    if (anImage)
+    {
+        MemoryImage *theImage = new MemoryImage(gSexyAppBase);
+        theImage->Create(anImage->GetWidth(), anImage->GetHeight());
+
+        Graphics g(theImage);
+        g.DrawImage(anImage, 0, 0);
+        
+        delete anImage;
+        anImage = theImage;
+    }
 
 	return anImage;
 }
