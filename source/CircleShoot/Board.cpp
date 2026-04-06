@@ -1617,6 +1617,10 @@ void Board::KeyChar(char theChar)
 void Board::KeyDown(KeyCode theKey)
 {
     Widget::KeyDown(theKey);
+    
+#if defined(__EMSCRIPTEN__)
+    Board::KeyChar((char)theKey);
+#endif
 }
 
 void Board::AddedToManager(WidgetManager *theManager)
