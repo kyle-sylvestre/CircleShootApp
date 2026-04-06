@@ -613,16 +613,24 @@ const char *LS(int string_id)
                 }
             }
 
-            // TW different string id
-            if (string_id == STRING_ID_BIZ_DEV)
+            const auto Override = [&](int id, const char *str_string_id)
             {
-                if (value.size() == 0)
+                if (string_id == id)
                 {
-                    const char *str_string_id = "STRING_ID_BIZDEV";
-                    value = Sexy::gSexyAppBase->GetString(str_string_id, "");
+                    std::string s = Sexy::gSexyAppBase->GetString(str_string_id, "");
+                    if (s.size())
+                    {
+                        value = s;
+                    }
                 }
-            }
+            };
             
+            // TW different string ids
+            Override(STRING_ID_BIZ_DEV, "STRING_ID_BIZDEV");
+            Override(STRING_ID_3D_HARDWARE_ACCELERATION, "STRING_ID_HARDWARE_ACC");
+            Override(STRING_ID_LAST_LIFE, "STRING_ID_LASTLIFE");
+            Override(STRING_ID_SUN, "STRING_ID_SG");
+
             STRINGS[string_id] = strdup(value.c_str());
         }
         result = STRINGS[string_id];
