@@ -1,4 +1,5 @@
 #include "SexyAppFramework/SexyAppBase.h"
+#include "SexyAppFramework/XmlParser.h"
 #include "CircleCommon.h"
 #include "Localization.h"
 
@@ -459,6 +460,52 @@ void SetupLocalizations()
     Set(NEW_VERSION_BODY, "");
     Set(STRING_ID_MORE_GAMES_URL, "");
     Set(STRING_ID_LVL, "LVL");
+    
+    // validate defaults.xml
+    if (0)
+    {
+        std::string theFilename = "";
+        XMLParser *mXMLParser = new XMLParser();
+        if (mXMLParser->OpenFile(theFilename))
+        {
+            XMLElement anElement;
+            bool founds[STRING_ID_count] = {};
+            while (!mXMLParser->HasFailed())
+            {
+                if (!mXMLParser->NextElement(&anElement))
+                {
+                    break;
+                }
+                for (auto pair : anElement.mAttributes)
+                {
+                    const char *key = pair.first.c_str();
+                    const char *value = pair.second.c_str();
+                    if (0 == strcmp(key, "id"))
+                    {
+                        bool found = false;
+                        for (int id = 0; id < SDL_arraysize(STRING_IDS); id++)
+                        {
+                            if (0 == strcmp(STRING_IDS[id], value))
+                            {
+                                founds[id] = true;
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                            SDL_Log("unknown string id: %s", value);
+                    }
+                }
+            }
+            
+            for (int i = 0; i < STRING_ID_count; i++)
+            {
+                if (!founds[i])
+                {
+                    SDL_Log("%s not found in defaults.xml", GetLocalizationIdString(i));
+                }
+            }
+        }
+    }
 }
 static std::string GetFormatter(int string_id, std::string value)
 {
