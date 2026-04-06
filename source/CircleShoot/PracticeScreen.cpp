@@ -104,9 +104,19 @@ void PracticeScreen::Resize(int x, int y, int theWidth, int theHeight)
 	Widget::Resize(x, y, theWidth, theHeight);
 
 	mBackButton->Resize(x + 177, y + 444, mBackButton->mWidth, mBackButton->mHeight);
-	mGauntPlayButton->Resize(x + 277, y + 444, mGauntPlayButton->mWidth, mGauntPlayButton->mHeight);
-	mNextButton->Resize(x + 390, y + 444, mNextButton->mWidth, mNextButton->mHeight);
-	mMainMenuButton->Resize(x + 10, y + 422, mMainMenuButton->mWidth, mMainMenuButton->mHeight);
+    if (mGauntPlayButton->mWidth == 145)
+    {
+        // localized
+        mGauntPlayButton->Resize(x + 257, y + 444, mGauntPlayButton->mWidth, mGauntPlayButton->mHeight);
+        mNextButton->Resize(x + 410, y + 444, mNextButton->mWidth, mNextButton->mHeight);
+    }
+    else
+    {
+        // normal
+        mGauntPlayButton->Resize(x + 277, y + 444, mGauntPlayButton->mWidth, mGauntPlayButton->mHeight);
+        mNextButton->Resize(x + 390, y + 444, mNextButton->mWidth, mNextButton->mHeight);
+    }
+    mMainMenuButton->Resize(x + 10, y + 422, mMainMenuButton->mWidth, mMainMenuButton->mHeight);
 	mSurvivalButton->Resize(x + 506, y + 413, mSurvivalButton->mWidth, mSurvivalButton->mHeight);
 	mPracticeButton->Resize(x + 505, y + 446, mPracticeButton->mWidth, mPracticeButton->mHeight);
 }
