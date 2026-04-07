@@ -371,7 +371,7 @@ void SetupLocalizations()
     Set(STRING_ID_HARDWARE_ACCELERATION_CANNOT_BE_ENABLED, "Hardware Acceleration cannot be enabled on this computer.\nYour video card does not meet the minimum requirements for this game.");
     Set(STRING_ID_WARNING, "Warning");
     Set(STRING_ID_YOUR_VIDEO_CARD_MAY_NOT_FULLY_SUPPORT_THIS_FEATURE, "Your video card may not fully support this feature.\nIf you experience slower performance, please disable Hardware Acceleration.");
-    Set(STRING_ID_LOCKED, "LOCKED");
+    Set(STRING_ID_LOCKED, "LoCKED");
     Set(STRING_ID_PRACTICE, "Practice");
     Set(STRING_ID_PRACTICE_A_SINGLE_BOARD_UNTIL_MASTERED, "PRACTICE A SINGLE BOARD UNTIL MASTERED.  CAN YOU BECOME A SUN GOD?");
     Set(STRING_ID_YOU_MUST_FIRST_UNLOCK_THIS_LEVEL_IN_ADVENTURE_MODE, "YOU MUST FIRST UNLOCK THIS LEVEL IN ADVENTURE MODE.");
