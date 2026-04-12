@@ -11,7 +11,7 @@ SDL_Thread *xCreateThread(SexyThreadCallback *cb, void *p)
         SexyThreadCallback *cb;
         void *params;
     };
-    const SDL_ThreadFunction Callback = [](void *params) SDLCALL -> int
+    const SDL_ThreadFunction Callback = [](void *params) -> int
     {
         Glue *glue = (Glue *)params;
         glue->cb(glue->params);
