@@ -2,6 +2,13 @@
 
 #include "CircleShootApp.h"
 #include <SDL2/SDL.h>
+#include <filesystem>
+
+static bool IsGameDirectory(std::filesystem::path p)
+{
+    std::filesystem::path rpath = p / "properties" / "resources.xml";
+    return Sexy::FileExists(rpath.string());
+}
 
 #if defined(__APPLE__)
 #import <Foundation/Foundation.h>
@@ -36,7 +43,7 @@ void PlatformInit()
                 rpath.pop_back();
         }
 
-        if (Sexy::FileExists((rpath + "/properties/resources.xml").c_str()))
+        if (IsGameDirectory(rpath))
         {
             Sexy::SetResourceFolder(rpath);
             Sexy::ChDir(rpath);
@@ -87,7 +94,8 @@ void PlatformInit()
 }
 #elif defined(_WIN32)
 #include <windows.h>
-#include <shlobj.h>   // for SHGetFolderPathA, SHBrowseForFolder, etc.
+#include <shlobj.h>         // SHGetFolderPathA, SHBrowseForFolder
+#include <shlobj_core.h>    // SHGetKnownFolderPath
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -144,6 +152,37 @@ void PlatformInit()
         std::string gameFolderFile = path + "\\gamefolder.txt";
         std::string rpath;
 
+        // preload with steam if file does not exist
+        if (!Sexy::FileExists(gameFolderFile))
+        {
+            const KNOWNFOLDERID FOLDER_IDS[] = {
+                FOLDERID_ProgramFilesX86,
+                FOLDERID_ProgramFiles,
+            };
+            for (KNOWNFOLDERID folder_id : FOLDER_IDS)
+            {
+                PWSTR path = NULL;
+                HRESULT hr = SHGetKnownFolderPath(folder_id, 0, NULL, &path);
+                if (SUCCEEDED(hr))
+                {
+                    bool is_success = false;
+                    std::string steampath = Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", path);
+                    if (IsGameDirectory(steampath))
+                    {
+                        is_success = true;
+                        std::ofstream outFile(gameFolderFile, std::ios::binary);
+                        if (outFile)
+                        {
+                            outFile.write(steampath.c_str(), steampath.size());
+                            outFile.close();
+                        }
+                    }
+                    CoTaskMemFree(path); path = NULL;
+                    if (is_success) break;
+                }
+            }
+        }
+
         for (;;)
         {
             // 2. Try reading saved path
@@ -158,7 +197,7 @@ void PlatformInit()
             }
 
             // 3. Check if the game folder is valid
-            if (Sexy::FileExists((rpath + "\\properties\\resources.xml").c_str()))
+            if (IsGameDirectory(rpath))
             {
                 Sexy::SetResourceFolder(rpath);
                 Sexy::ChDir(rpath);
