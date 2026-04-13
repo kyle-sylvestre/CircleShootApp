@@ -95,37 +95,67 @@ void PlatformInit()
 #elif defined(_WIN32)
 #include <windows.h>
 #include <shlobj.h>         // SHGetFolderPathA, SHBrowseForFolder
+#include <shobjidl.h>
 #if !defined(__MINGW32__)
 #include <shlobj_core.h>    // SHGetKnownFolderPath
 #endif
-#include <KnownFolders.h>   // FOLDERID_ProgramFilesX86, FOLDERID_ProgramFiles
+#include <KnownFolders.h>   // KNOWNFOLDERID
 #include <string>
 #include <fstream>
 #include <sstream>
 
-bool PickFolderLegacy(std::string& outPath, const std::string& initialFolder = ".")
+static bool PickFolder(std::string& outPath)
 {
     bool result = false;
-    BROWSEINFOW bi = {0};
-    wchar_t path[MAX_PATH] = {0};
+    IFileDialog* pDialog = nullptr;
 
-    bi.hwndOwner = nullptr;
-    bi.pidlRoot = nullptr; // Start from "My Computer"
-    bi.pszDisplayName = path;
-    bi.lpszTitle = L"Select Zuma Deluxe Folder";
-    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI | BIF_EDITBOX;
+    if (FAILED(CoInitializeEx(NULL, COINIT_APARTMENTTHREADED)))
+        return false;
 
-    // Optionally set initial folder using a PIDL
-    LPITEMIDLIST pidl = SHBrowseForFolderW(&bi);
-    if (pidl != nullptr)
+    HRESULT hr = CoCreateInstance(
+        CLSID_FileOpenDialog,
+        nullptr,
+        CLSCTX_INPROC_SERVER,
+        IID_PPV_ARGS(&pDialog)
+    );
+
+    if (FAILED(hr))
+        return false;
+
+    DWORD options = 0;
+    pDialog->GetOptions(&options);
+
+    // Folder picker mode
+    pDialog->SetOptions(options |
+        FOS_PICKFOLDERS |
+        FOS_FORCEFILESYSTEM |
+        FOS_PATHMUSTEXIST |
+        FOS_NOCHANGEDIR);
+
+    pDialog->SetTitle(L"Select Zuma Deluxe Folder");
+
+    hr = pDialog->Show(nullptr);
+
+    if (SUCCEEDED(hr))
     {
-        if (SHGetPathFromIDListW(pidl, path))
+        IShellItem* item = nullptr;
+
+        if (SUCCEEDED(pDialog->GetResult(&item)))
         {
-            outPath = Sexy::PathToU8(path);
-            result = true;
+            PWSTR path = nullptr;
+
+            if (SUCCEEDED(item->GetDisplayName(SIGDN_FILESYSPATH, &path)))
+            {
+                outPath = Sexy::PathToU8(path);
+                CoTaskMemFree(path);
+                result = true;
+            }
+
+            item->Release();
         }
-        CoTaskMemFree(pidl);
     }
+
+    pDialog->Release();
     return result;
 }
 
@@ -250,7 +280,7 @@ void PlatformInit()
             else
             {
                 // 4. Show legacy folder selection dialog
-                if (!PickFolderLegacy(rpath))
+                if (!PickFolder(rpath))
                 {
                     exit(0); // user canceled
                 }
