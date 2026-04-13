@@ -95,7 +95,10 @@ void PlatformInit()
 #elif defined(_WIN32)
 #include <windows.h>
 #include <shlobj.h>         // SHGetFolderPathA, SHBrowseForFolder
+#if !defined(__MINGW32__)
 #include <shlobj_core.h>    // SHGetKnownFolderPath
+#endif
+#include <KnownFolders.h>   // FOLDERID_ProgramFilesX86, FOLDERID_ProgramFiles
 #include <string>
 #include <fstream>
 #include <sstream>
