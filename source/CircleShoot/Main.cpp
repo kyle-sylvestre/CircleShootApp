@@ -106,25 +106,38 @@ void PlatformInit()
 bool PickFolderLegacy(std::string& outPath, const std::string& initialFolder = ".")
 {
     bool result = false;
-    BROWSEINFOA bi = {0};
-    char path[MAX_PATH] = {0};
+    BROWSEINFOW bi = {0};
+    wchar_t path[MAX_PATH] = {0};
 
     bi.hwndOwner = nullptr;
     bi.pidlRoot = nullptr; // Start from "My Computer"
     bi.pszDisplayName = path;
-    bi.lpszTitle = "Select Zuma Deluxe Folder";
+    bi.lpszTitle = L"Select Zuma Deluxe Folder";
     bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_USENEWUI | BIF_EDITBOX;
 
     // Optionally set initial folder using a PIDL
-    LPITEMIDLIST pidl = SHBrowseForFolderA(&bi);
+    LPITEMIDLIST pidl = SHBrowseForFolderW(&bi);
     if (pidl != nullptr)
     {
-        if (SHGetPathFromIDListA(pidl, path))
+        if (SHGetPathFromIDListW(pidl, path))
         {
-            outPath = path;
+            outPath = Sexy::PathToU8(path);
             result = true;
         }
         CoTaskMemFree(pidl);
+    }
+    return result;
+}
+
+static std::wstring GetFolder(KNOWNFOLDERID folder_id)
+{
+    std::wstring result;
+    PWSTR path = NULL;
+    HRESULT hr = SHGetKnownFolderPath(folder_id, 0, NULL, &path);
+    if (SUCCEEDED(hr))
+    {
+        result = path;
+        CoTaskMemFree(path);
     }
     return result;
 }
@@ -146,42 +159,70 @@ void PlatformInit()
     }
 
     // 1. Create settings folder in AppData\Roaming\ZumaPortable
-    char appDataPath[MAX_PATH] = {};
-    if (SUCCEEDED(SHGetFolderPathA(nullptr, CSIDL_APPDATA, nullptr, 0, appDataPath)))
+    wchar_t appDataPath[MAX_PATH] = {};
+    if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_APPDATA, nullptr, 0, appDataPath)))
     {
-        std::string path = std::string(appDataPath) + "\\ZumaPortable";
+        std::string path = Sexy::StrFormat("%ls\\ZumaPortable", appDataPath);
         Sexy::MkDir(path.c_str());
 
         std::string gameFolderFile = path + "\\gamefolder.txt";
         std::string rpath;
 
-        // preload with steam if file does not exist
+        // check for known game data locations
         if (!Sexy::FileExists(gameFolderFile))
         {
-            const KNOWNFOLDERID FOLDER_IDS[] = {
-                FOLDERID_ProgramFilesX86,
-                FOLDERID_ProgramFiles,
+            const std::string FOLDERS[] = {
+                Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFilesX86).c_str()),
+                Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFiles).c_str()),
+                Sexy::StrFormat("%ls\\PopCap Games\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFilesX86).c_str()),
+                "C:\\Zylom Games\\Zuma",
             };
-            for (KNOWNFOLDERID folder_id : FOLDER_IDS)
+            for (std::string folder : FOLDERS)
             {
-                PWSTR path = NULL;
-                HRESULT hr = SHGetKnownFolderPath(folder_id, 0, NULL, &path);
-                if (SUCCEEDED(hr))
+                if (IsGameDirectory(folder))
                 {
-                    bool is_success = false;
-                    std::string steampath = Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", path);
-                    if (IsGameDirectory(steampath))
+                    std::ofstream outFile(gameFolderFile, std::ios::binary);
+                    if (outFile)
                     {
-                        is_success = true;
-                        std::ofstream outFile(gameFolderFile, std::ios::binary);
-                        if (outFile)
-                        {
-                            outFile.write(steampath.c_str(), steampath.size());
-                            outFile.close();
-                        }
+                        outFile.write(folder.c_str(), folder.size());
+                        outFile.close();
                     }
-                    CoTaskMemFree(path); path = NULL;
-                    if (is_success) break;
+                    break;
+                }
+            }
+        }
+
+        // check for known save locations
+        {
+            wchar_t appdata[MAX_PATH] = {};
+            SHGetFolderPathW(NULL, CSIDL_COMMON_APPDATA, NULL, 0, appdata);
+
+            std::string datapath;
+            std::ifstream file(gameFolderFile, std::ios::binary);
+            if (file)
+            {
+                std::ostringstream contents;
+                contents << file.rdbuf();
+                datapath = contents.str();
+                while (!datapath.empty() && (datapath.back() == '\r' || datapath.back() == '\n'))
+                    datapath.pop_back();
+            }
+
+            const std::string FOLDERS[] = {
+                Sexy::StrFormat("%ls\\PopCap Games\\Zuma Deluxe", appdata),
+                Sexy::StrFormat("%ls\\Steam\\Zuma", GetFolder(FOLDERID_ProgramData).c_str()),
+                "C:\\Zylom Games\\Zuma",
+                datapath,
+            };
+            
+            std::string dest = path + "\\userdata";
+            for (std::string folder : FOLDERS)
+            {
+                std::string src = Sexy::StrFormat("%s\\userdata", folder.c_str());
+                if (Sexy::FileExists(src) && !Sexy::FileExists(dest))
+                {
+                    std::error_code ec;
+                    std::filesystem::copy(src, dest, ec);
                 }
             }
         }
