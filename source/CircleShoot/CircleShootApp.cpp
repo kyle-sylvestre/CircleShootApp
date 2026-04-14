@@ -118,7 +118,8 @@ void CircleShootApp::Init()
     {
         mProfile = mProfileMgr->GetProfile(profile);
     }
-    else
+    
+    if (!mProfile)
     {
         mProfile = mProfileMgr->GetAnyProfile();
     }
