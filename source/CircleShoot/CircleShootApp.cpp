@@ -38,7 +38,7 @@ using namespace Sexy;
 CircleShootApp::CircleShootApp()
 {
     mTitle = "Zuma Deluxe " + mProductVersion;
-    mRegKey = "PopCap\\Zuma";
+    SetString("RegistryKey", "PopCap\\Zuma");
 
     mAutoEnable3D = true;
 
