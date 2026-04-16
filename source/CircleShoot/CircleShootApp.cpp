@@ -494,7 +494,7 @@ void CircleShootApp::LoadingThreadProc()
 
     // check for funky zylom MenuMain resource group
     {
-        std::string file = Sexy::StrFormat("%s/properties/resources.xml", Sexy::GetResourceFolder().c_str());
+        std::string file = Sexy::GetResourcePath("properties/resources.xml");
         FILE *f = fopen(file.c_str(), "rb");
         if (f)
         {
