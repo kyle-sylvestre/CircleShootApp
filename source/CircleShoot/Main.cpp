@@ -57,6 +57,7 @@ void PlatformInit()
             [openDlg setCanChooseDirectories:YES];
             [openDlg setCanChooseFiles:NO];
             [openDlg setAllowsMultipleSelection:NO];
+            [openDlg setShowsHiddenFiles:YES];
             [openDlg setDirectoryURL:[NSURL URLWithString:[NSString stringWithUTF8String:"."] ] ];
             [openDlg setTreatsFilePackagesAsDirectories:YES];
             auto result = [openDlg runModal];
