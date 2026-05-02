@@ -25,12 +25,28 @@ void PlatformInit()
     NSString *fullPath = [pathWithTilde stringByExpandingTildeInPath];
     const char *path = [fullPath UTF8String];
     Sexy::MkDir(path);
+    std::string filename = Sexy::StrFormat("%s/gamefolder.txt", path);
+
+    // check for steam install
+    if (!Sexy::FileExists(filename))
+    {
+        NSString *steamTilde = @"~/Library/Application Support/Steam/steamapps/common/Zuma Deluxe/Zuma Deluxe.app/Contents/Resources";
+        std::string steam = [[steamTilde stringByExpandingTildeInPath] UTF8String];
+        if (IsGameDirectory(steam))
+        {
+            std::ofstream outFile(filename, std::ios::binary);
+            if (outFile)
+            {
+                outFile.write(steam.c_str(), steam.size());
+                outFile.close();
+            }
+        }
+    }
     
     for (;;)
     {
         // read zuma file location
         std::string rpath;
-        std::string filename = Sexy::StrFormat("%s/gamefolder.txt", path);
         std::ifstream file(filename, std::ios::binary); // open in binary mode
         if (file)
         {
