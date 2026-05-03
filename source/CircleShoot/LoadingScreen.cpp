@@ -96,11 +96,11 @@ void LoadingScreen::Update()
 {
     Widget::Update();
 
+    MarkDirty();
     double progress = gSexyAppBase->GetLoadingThreadProgress();
     if (progress > mLoadingProgress)
     {
         mLoadingProgress = std::min(progress, mLoadingProgress + 0.01);
-        MarkDirty();
 
         if (mLoadingProgress >= 1.0f)
         {
