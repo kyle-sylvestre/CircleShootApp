@@ -319,6 +319,32 @@ void PlatformInit()
     }
 }
 
+#elif defined(__ANDROID__)
+#include <jni.h>
+#include <unistd.h>
+#include <string>
+std::string android_data_path;
+extern "C"
+JNIEXPORT void JNICALL
+Java_io_itch_ksylvestre_zumaportable_ZumaPortableActivity_nativeSetWorkingDir(
+        JNIEnv* env,
+        jobject /* this */,
+        jstring path_) {
+
+    const char *path = env->GetStringUTFChars(path_, nullptr);
+    if (path)
+    {
+        android_data_path = path;
+        env->ReleaseStringUTFChars(path_, path);
+    }
+}
+void PlatformInit() 
+{
+    SDL_Log("ANDROID_DATA_PATH:%s", android_data_path.c_str());
+    Sexy::SetResourceFolder(android_data_path);
+    Sexy::ChDir(android_data_path);
+}
+
 #else
 void PlatformInit() 
 {
