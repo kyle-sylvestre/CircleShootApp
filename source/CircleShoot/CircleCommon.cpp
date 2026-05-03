@@ -368,6 +368,11 @@ void Sexy::SetupDialog(Dialog *theDialog, int theMinWidth)
     {
         winY = 10;
     }
+    
+    // make sure dialog is above onscreen keyboard
+#if defined (__ANDROID__)
+    winY /= 4;
+#endif
 
     theDialog->Resize((screenWidth - aWinWidth) / 2, winY, aWinWidth, winHeight);
 
