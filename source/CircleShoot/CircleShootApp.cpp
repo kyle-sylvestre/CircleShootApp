@@ -922,7 +922,11 @@ void CircleShootApp::FinishUpdateDialogs(int theDialogId, bool confirm)
 
 void CircleShootApp::DoConfirmQuitDialog()
 {
+    // HACK: black window left around after quitting android
+    // disable this and just rely on the user swiping the app away instead
+#if !defined(__ANDROID__)
     DoDialog(DialogType_ConfirmQuit, true, LS(STRING_ID_QUIT_ZUMA_QM), LS(STRING_ID_QUIT_THE_GAME_QM), "", Dialog::BUTTONS_YES_NO);
+#endif
 }
 
 void CircleShootApp::SwitchSong(int id)
