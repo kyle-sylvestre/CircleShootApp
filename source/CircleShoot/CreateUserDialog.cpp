@@ -62,7 +62,7 @@ void CreateUserDialog::RemovedFromManager(WidgetManager *theWidgetManager)
 
 void CreateUserDialog::EditWidgetText(int theId, const std::string &theString)
 {
-	ButtonDepress(mId + 2000);
+    ButtonDepress(ID_YES);
 }
 
 bool CreateUserDialog::AllowChar(int theId, char theChar)
