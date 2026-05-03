@@ -356,9 +356,12 @@ int main(int argc, char *argv[])
     Sexy::CircleShootApp app;
     PlatformInit();
 
+    SDL_Log("Init");
     app.Init();
+    SDL_Log("Start");
     app.Start();
+    SDL_Log("Shutdown");
     app.Shutdown();
-    
+    SDL_Log("Return from main");
     return 0;
 }
