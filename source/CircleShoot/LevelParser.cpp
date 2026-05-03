@@ -615,6 +615,7 @@ void GetCurveAttribute(
     }
 }
 
+extern "C" int casepath(char const *path, char *r);
 bool LevelParser::DoParseLevel(XMLElement &theElem, bool isLevel)
 {
     LevelDesc aDesc;
@@ -628,6 +629,13 @@ bool LevelParser::DoParseLevel(XMLElement &theElem, bool isLevel)
     else
     {
         mCurDir = "levels/" + mCurLevelId;
+    }
+
+    std::string resolve;
+    resolve.resize(mCurDir.size() + 3);
+    if (casepath(mCurDir.c_str(), &resolve[0]))
+    {
+        mCurDir = resolve.c_str();
     }
 
     mCurDir = Sexy::RemoveTrailingSlash(mCurDir);

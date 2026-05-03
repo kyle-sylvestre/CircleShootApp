@@ -33,11 +33,12 @@ void DataReader::OpenMemory(const void *theMemory, uint32_t theLength, bool deal
     mDeallocate = deallocate;
 }
 
+extern "C" FILE *fcaseopen(char const *path, char const *mode);
 bool DataReader::OpenFile(const std::string &theFileName)
 {
     Close();
 
-    mFileHandle = fopen(theFileName.c_str(), "rb");
+    mFileHandle = fcaseopen(theFileName.c_str(), "rb");
     return mFileHandle != NULL;
 }
 
