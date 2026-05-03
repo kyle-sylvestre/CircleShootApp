@@ -1435,6 +1435,20 @@ void Board::MouseDown(int x, int y, int theClickCount)
                     return;
             }
 
+            // mobile tap frog to swap bullets
+#if defined(__ANDROID__)
+            int fcx = mGun->GetCenterX();
+            int fcy = mGun->GetCenterY();
+            int fw = mGun->GetWidth();
+            int fh = mGun->GetHeight();
+            Rect frog = { fcx - fw / 2, fcy - fh / 2, fw, fh };
+            if (frog.Contains(x, y))
+            {
+                mGun->SwapBullets();
+                return;
+            }
+#endif
+
             if (theClickCount >= 0)
             {
                 if (mGun->StartFire())

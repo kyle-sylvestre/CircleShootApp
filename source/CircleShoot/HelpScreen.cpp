@@ -482,6 +482,10 @@ void HelpWidget3::Draw(Graphics *g)
     Rect aRightTextRect = Rect(430, mHeight - 2 * Sexy::FONT_DIALOG->GetHeight() - 15, 170, 0);
     int frame = 1;
 
+#if defined(__ANDROID__)
+    g->SetColor(Color(0xFFFF00));
+    WriteWordWrapped(g, aRightTextRect, "Tap the frog to swap balls.", -1, 0);
+#else
     if ((mUpdateCnt % 200) < 80 && mUpdateCnt > 100)
     {
         frame = 0;
@@ -495,6 +499,7 @@ void HelpWidget3::Draw(Graphics *g)
 
     g->SetColor(Color(0xFFFF00));
     WriteWordWrapped(g, aRightTextRect, LS(STRING_ID_RIGHT_MOUSE_BUTTON_WILL_SWAP_THE_BALLS), -1, 0);
+#endif
 }
 
 HelpBack::HelpBack() : Widget()
