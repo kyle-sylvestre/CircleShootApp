@@ -1,5 +1,5 @@
 #include "SexyAppFramework/SexyAppBase.h"
-#include "SexyAppFramework/XmlParser.h"
+#include "SexyAppFramework/XMLParser.h"
 #include "CircleCommon.h"
 #include "Localization.h"
 
