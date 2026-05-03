@@ -74,6 +74,7 @@ public:
 	Bullet* GetNextBullet() { return mNextBullet; }
 	bool StartFire(bool recoil = true);
 	Bullet* GetFiredBullet();
+    bool IsInside(int x, int y);
 
 	void SetPos(int theX, int theY);
 	void SetSize(int theWidth, int theHeight);

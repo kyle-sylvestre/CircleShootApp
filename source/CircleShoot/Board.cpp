@@ -1383,6 +1383,12 @@ void Board::MouseMove(int x, int y)
     if (mPauseCount != 0)
         return;
 
+    // mobile don't move when tapping frog to switch balls
+#if defined(__ANDROID__)
+    if (mGun->IsInside(x, y))
+        return;
+#endif
+
     int fromCenterX = x - mGun->GetCenterX();
     float angle;
 
@@ -1437,12 +1443,7 @@ void Board::MouseDown(int x, int y, int theClickCount)
 
             // mobile tap frog to swap bullets
 #if defined(__ANDROID__)
-            int fcx = mGun->GetCenterX();
-            int fcy = mGun->GetCenterY();
-            int fw = mGun->GetWidth();
-            int fh = mGun->GetHeight();
-            Rect frog = { fcx - fw / 2, fcy - fh / 2, fw, fh };
-            if (frog.Contains(x, y))
+            if (mGun->IsInside(x, y))
             {
                 mGun->SwapBullets();
                 return;

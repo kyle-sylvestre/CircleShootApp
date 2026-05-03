@@ -117,6 +117,17 @@ void Gun::SyncState(DataSync &theSync)
     }
 }
 
+bool Gun::IsInside(int x, int y)
+{
+    Rect r = { 
+        mCenterX - mWidth / 2, 
+        mCenterY - mHeight / 2, 
+        mWidth, 
+        mHeight 
+    };
+    return r.Contains(x, y);
+}
+
 bool Gun::NeedsReload()
 {
     return mNextBullet == NULL || mBullet == NULL;
