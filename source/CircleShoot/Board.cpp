@@ -1423,10 +1423,8 @@ void Board::MouseDrag(int x, int y)
     MouseMove(x, y);
 }
 
-void Board::MouseDown(int x, int y, int theClickCount)
+void Board::ActivateMouse(int x, int y, int theClickCount)
 {
-    Widget::MouseDown(x, y, theClickCount);
-
     if (mPauseCount != 0)
     {
         Pause(false);
@@ -1467,6 +1465,22 @@ void Board::MouseDown(int x, int y, int theClickCount)
             mTransitionMgr->MouseDown(x, y, theClickCount);
         }
     }
+}
+
+void Board::MouseUp(int x, int y, int theClickCount)
+{
+    Widget::MouseUp(x, y, theClickCount);
+#if defined(__ANDROID__)
+    ActivateMouse(x, y, theClickCount);
+#endif
+}
+
+void Board::MouseDown(int x, int y, int theClickCount)
+{
+    Widget::MouseDown(x, y, theClickCount);
+#if !defined(__ANDROID__)
+    ActivateMouse(x, y, theClickCount);
+#endif
 }
 
 extern bool gForceStageComplete;

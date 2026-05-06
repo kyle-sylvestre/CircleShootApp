@@ -229,6 +229,7 @@ namespace Sexy
 		virtual void MouseMove(int x, int y);
 		virtual void MouseDrag(int x, int y);
 		virtual void MouseDown(int x, int y, int theClickCount);
+        virtual void MouseUp(int x, int y, int theClickCount);
 		virtual void KeyChar(char theChar);
 		virtual void KeyDown(KeyCode theKey);
 		virtual void AddedToManager(WidgetManager *theManager);
@@ -236,6 +237,7 @@ namespace Sexy
 		virtual void ButtonPress(int theId);
 		virtual void ButtonDepress(int theId);
 
+        void ActivateMouse(int x, int y, int theClickCount);
 		void ActivatePower(Ball *theBall);
 		void WaitForLoadingThread();
 		void Reset(bool gameOver, bool isLevelReset = false);
