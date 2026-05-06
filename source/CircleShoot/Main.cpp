@@ -345,6 +345,17 @@ void PlatformInit()
     Sexy::ChDir(android_data_path);
 }
 
+#if __ANDROID_API__ < 23
+extern "C" ssize_t __write_chk(int fd, const void* buf, size_t count, size_t buf_size)
+{
+    //__check_count("write", "count", count);
+    //__check_buffer_access("write", "read from", count, buf_size);
+    return write(fd, buf, count);
+}
+#undef stderr
+FILE *stderr = &__sF[2];
+#endif
+
 #else
 void PlatformInit() 
 {
