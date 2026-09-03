@@ -1565,6 +1565,7 @@ Widget *CircleShootApp::Move(Widget *start, Direction dir)
         Widget *sb1 = mPracticeScreen->mDoorInfo[1].mSpoof;
         Widget *sb2 = mPracticeScreen->mDoorInfo[2].mSpoof;
         Widget *sb3 = mPracticeScreen->mDoorInfo[3].mSpoof;
+        if (!gb->mVisible) gb = NULL;
         
         //              SUNGOD
         //              JAGUAR
