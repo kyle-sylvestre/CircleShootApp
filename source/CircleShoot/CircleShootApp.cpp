@@ -1920,7 +1920,7 @@ void CircleShootApp::HandleEvent(SDL_Event *ev)
                     mBoard->mTransitionMgr->FinishAllTextBlurbs();
                     mBoard->mTransitionMgr->mResetFrame = mBoard->mTransitionMgr->mStateCount;
                 }
-                else
+                else if (mControllerWidget)
                 {
                     int x = mControllerWidget->mX + mControllerWidget->mWidth / 2.0f;
                     int y = mControllerWidget->mY + mControllerWidget->mHeight / 2.0f;
