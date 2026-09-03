@@ -354,6 +354,16 @@ extern "C" ssize_t __write_chk(int fd, const void* buf, size_t count, size_t buf
 }
 #undef stderr
 FILE *stderr = &__sF[2];
+
+#if __ANDROID_API__ < 20
+#include <locale.h>
+extern "C" char *strerror_l(int errnum, locale_t locale)
+{
+    (void)locale;
+    return strerror(errnum);
+}
+#endif
+
 #endif
 
 #else
