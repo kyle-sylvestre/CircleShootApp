@@ -43,6 +43,7 @@
 #include "Res.h"
 
 using namespace Sexy;
+const Sint32 XREL_SPOOF_EVENT = INT32_MAX;
 
 CircleShootApp::CircleShootApp()
 {
@@ -1395,6 +1396,7 @@ void CircleShootApp::MoveToControllerWidget()
         SDL_Event ev = {};
         ev.motion.x = pt.x;
         ev.motion.y = pt.y;
+        ev.motion.xrel = XREL_SPOOF_EVENT;
         ev.type = SDL_MOUSEMOTION;
         SDL_PushEvent(&ev);
 
@@ -1403,6 +1405,7 @@ void CircleShootApp::MoveToControllerWidget()
         ev.type = SDL_MOUSEMOTION;
         ev.motion.x = pt.x;
         ev.motion.y = pt.y;
+        ev.motion.xrel = XREL_SPOOF_EVENT;
         SDL_PushEvent(&ev);
 
         // make sure window draws the moved cursor
@@ -1789,9 +1792,21 @@ Widget *CircleShootApp::Move(Widget *start, Direction dir)
 }
 void CircleShootApp::HandleEvent(SDL_Event *ev)
 {
-    static int i = -1;
-    static int x = 0;
-    static int y = 0;
+    // handle mouse visibility
+    if ((ev->type == SDL_MOUSEMOTION && ev->motion.xrel != XREL_SPOOF_EVENT) ||
+        ev->type == SDL_CONTROLLERDEVICEREMOVED)
+    {
+        mCursorHidden = false;
+        EnforceCursor();
+    }
+    else if (ev->type == SDL_CONTROLLERDEVICEADDED ||
+             ev->type == SDL_CONTROLLERAXISMOTION ||
+             ev->type == SDL_CONTROLLERBUTTONDOWN ||
+             ev->type == SDL_CONTROLLERBUTTONUP)
+    {
+        mCursorHidden = true;
+        EnforceCursor();
+    }
     
     if (ev->type == SDL_CONTROLLERDEVICEADDED)
     {
