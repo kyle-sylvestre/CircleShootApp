@@ -1448,6 +1448,11 @@ void CircleShootApp::DrawAboveWidgets(Graphics *g)
                         mControllerWidget = mPracticeScreen->mSurvivalButton;
                     }
                 }
+                else if (mHelpScreen)
+                {
+                    handled = true;
+                    mControllerWidget = mHelpScreen->mOKButton; 
+                }
 
                 if (!handled)
                 {

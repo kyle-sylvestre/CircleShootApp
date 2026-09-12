@@ -13,7 +13,7 @@ namespace Sexy
 
     class HelpScreen : public Widget, public ButtonListener, public CheckboxListener
     {
-    private:
+    public:
         Widget *mHelpWidget1;
         Widget *mHelpWidget2;
         Widget *mHelpWidget3;
@@ -21,7 +21,6 @@ namespace Sexy
         CircleCheckbox *mShowHelpCheckbox;
         CircleButton *mOKButton;
 
-    public:
         HelpScreen();
         virtual ~HelpScreen();
 
