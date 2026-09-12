@@ -15,10 +15,6 @@
 
 #include <math.h>
 
-#if defined(__SWITCH__)
-#include <switch.h>
-#endif
-
 using namespace Sexy;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -111,25 +107,6 @@ void LoadingScreen::Update()
             mClickToPlayLink->SetVisible(true);
         }
     }
-
-#if defined(__SWITCH__)
-    {
-        if (appletGetOperationMode() == AppletOperationMode_Console)
-        {
-            mClickToPlayLink->SetDisabled(true);
-            mClickToPlayLink->mLabel = "Enter Handheld Mode";
-        }
-        else
-        {
-            mClickToPlayLink->SetDisabled(false);
-            mClickToPlayLink->mLabel = LS(STRING_ID_CLICK_HERE_TO_PLAY);
-        }
-        int w = Sexy::FONT_FLOAT->StringWidth(mClickToPlayLink->mLabel) + 20;
-        int h = Sexy::FONT_FLOAT->GetHeight() + 20;
-        int x = (gSexyAppBase->mWidth - w) / 2;
-        mClickToPlayLink->Resize(x,430,w,h);
-    }
-#endif
 
     // todo register dialog
 }
