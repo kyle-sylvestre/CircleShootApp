@@ -219,6 +219,7 @@ void PlatformInit()
         if (!Sexy::FileExists(gameFolderFile))
         {
             const std::string FOLDERS[] = {
+                ".",
                 Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFilesX86).c_str()),
                 Sexy::StrFormat("%ls\\Steam\\SteamApps\\Common\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFiles).c_str()),
                 Sexy::StrFormat("%ls\\PopCap Games\\Zuma Deluxe", GetFolder(FOLDERID_ProgramFilesX86).c_str()),
