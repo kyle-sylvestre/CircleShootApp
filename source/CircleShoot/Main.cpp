@@ -112,7 +112,9 @@ void PlatformInit()
 #elif defined(_WIN32)
 #include <windows.h>
 #include <shlobj.h>         // SHGetFolderPathA, SHBrowseForFolder
+#include <shellapi.h>       // SHFileOperationW
 #include <shobjidl.h>
+#include <shlwapi.h>        // PathIsDirectoryEmptyW
 #if !defined(__MINGW32__)
 #include <shlobj_core.h>    // SHGetKnownFolderPath
 #endif
@@ -185,6 +187,32 @@ static std::wstring GetFolder(KNOWNFOLDERID folder_id)
     {
         result = path;
         CoTaskMemFree(path);
+    }
+    return result;
+}
+
+std::wstring GetUTF16(const std::string& utf8)
+{
+    std::wstring result;
+    if (utf8.size() != 0)
+    {
+        int len = MultiByteToWideChar(CP_UTF8,
+                                      MB_ERR_INVALID_CHARS,
+                                      utf8.data(),
+                                      (int)utf8.size(),
+                                      nullptr,
+                                      0);
+
+        if (len > 0)
+        {
+            result.resize(len);
+            MultiByteToWideChar(CP_UTF8,
+                                MB_ERR_INVALID_CHARS,
+                                utf8.data(),
+                                (int)utf8.size(),
+                                result.data(),
+                                len);
+        }
     }
     return result;
 }
@@ -269,8 +297,22 @@ void PlatformInit()
                 std::string src = Sexy::StrFormat("%s\\userdata", folder.c_str());
                 if (Sexy::FileExists(src) && !Sexy::FileExists(dest))
                 {
-                    std::error_code ec;
-                    std::filesystem::copy(src, dest, ec);
+                    std::wstring wsrc = GetUTF16(src);
+                    std::wstring wdest = GetUTF16(dest + "\\..");
+                    if (!PathIsDirectoryEmptyW(wsrc.c_str()))
+                    {
+                        // double null terminated: PCZZWSTR
+                        wsrc.push_back(L'\0');
+                        wdest.push_back(L'\0');
+
+                        SHFILEOPSTRUCTW s = {};
+                        s.wFunc = FO_COPY;
+                        s.fFlags = FOF_NO_UI;
+                        s.pTo = wdest.c_str();
+                        s.pFrom = wsrc.c_str();
+                        SHFileOperationW(&s);
+                        break;
+                    }
                 }
             }
         }
