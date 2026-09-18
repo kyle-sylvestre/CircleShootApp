@@ -27,9 +27,10 @@ void PlatformInit()
     Sexy::MkDir(path);
     std::string filename = Sexy::StrFormat("%s/gamefolder.txt", path);
 
-    // check for steam install
+    // check for known game data locations
     if (!Sexy::FileExists(filename))
     {
+        // check for steam install
         NSString *steamTilde = @"~/Library/Application Support/Steam/steamapps/common/Zuma Deluxe/Zuma Deluxe.app/Contents/Resources";
         std::string steam = [[steamTilde stringByExpandingTildeInPath] UTF8String];
         if (IsGameDirectory(steam))
@@ -38,6 +39,20 @@ void PlatformInit()
             if (outFile)
             {
                 outFile.write(steam.c_str(), steam.size());
+                outFile.close();
+            }
+        }
+        
+        // check directory containing app
+        NSString *appPath = [[NSBundle mainBundle] bundlePath];
+        NSString *appDir = [appPath stringByDeletingLastPathComponent];
+        std::string app = [appDir UTF8String];
+        if (IsGameDirectory(app))
+        {
+            std::ofstream outFile(filename, std::ios::binary);
+            if (outFile)
+            {
+                outFile.write(app.c_str(), app.size());
                 outFile.close();
             }
         }
