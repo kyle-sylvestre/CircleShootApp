@@ -1566,6 +1566,7 @@ Widget *CircleShootApp::Move(Widget *start, Direction dir)
 
     OptionsDialog *options = (OptionsDialog *)GetDialog(DialogType_Options);
     UserDialog *user = (UserDialog *)GetDialog(DialogType_User);
+    Dialog *next_temple = GetDialog(DialogType_NextTemple);
     if (mPracticeScreen)
     {
         Widget *nb = mPracticeScreen->mNextButton;
@@ -1664,7 +1665,7 @@ Widget *CircleShootApp::Move(Widget *start, Direction dir)
         };
         default_pos = GetCellPos((game) ? game : main);
     }
-    else if (mAdventureScreen)
+    else if (mAdventureScreen && next_temple == NULL)
     {
         Widget *main = mAdventureScreen->mMainMenuButton;
         Widget *play = mAdventureScreen->mPlayButton;
